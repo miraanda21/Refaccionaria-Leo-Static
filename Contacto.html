@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto | Refaccionaria Leo</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style type="text/tailwindcss">
+        @theme {
+            --color-amarillo: #FACC15;
+            --color-negro: #0a0a0a;
+            --color-gris-oscuro: #1a1a1a;
+            --color-gris-medio: #2a2a2a;
+            --font-barlow: 'Barlow', sans-serif;
+            --font-bebas: 'Bebas Neue', sans-serif;
+        }
+
+        @keyframes pulso {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(1.4); }
+        }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(18px); }
+            to { opacity: 1; transform: none; }
+        }
+
+        .anim-fade-up { animation: fadeUp 0.5s ease both; }
+        .anim-fade-up-1 { animation: fadeUp 0.5s 0.1s ease both; }
+        .anim-fade-up-2 { animation: fadeUp 0.5s 0.2s ease both; }
+        .anim-fade-up-3 { animation: fadeUp 0.5s 0.3s ease both; }
+        .pulso-dot::before { animation: pulso 2s infinite; }
+
+        .chip.activo {
+            background: rgba(250,204,21,0.12);
+            border-color: rgba(250,204,21,0.4);
+            color: var(--color-amarillo);
+        }
+
+        .horario-fila.hoy .horario-dia { color: var(--color-amarillo); font-weight: 700; }
+        .horario-fila.hoy .horario-hora { color: var(--color-amarillo); }
+        .horario-fila.cerrado .horario-hora { color: rgba(255,255,255,0.25); }
+        .badge-hoy {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            background: rgba(250,204,21,0.15);
+            color: var(--color-amarillo);
+            padding: 2px 8px;
+            border-radius: 100px;
+            border: 1px solid rgba(250,204,21,0.3);
+            margin-left: 8px;
+        }
+
+        .btn-enviar.enviando { background: rgba(250,204,21,0.4); pointer-events: none; }
+
+        .toast {
+            transform: translateY(100px);
+            opacity: 0;
+            transition: transform 0.4s ease, opacity 0.4s ease;
+            pointer-events: none;
+        }
+        .toast.visible { transform: translateY(0); opacity: 1; }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.55s ease, transform 0.55s ease;
+        }
+        .reveal.visible { opacity: 1; transform: none; }
+    </style>
+</head>
+<body class="font-barlow bg-negro text-[#f5f5f0] m-0 p-0 box-border overflow-x-hidden">
+
+    <nav class="fixed top-0 left-0 right-0 z-[100] bg-negro/92 backdrop-blur-[12px] border-b border-amarillo/15 py-[14px] transition-colors duration-300">
+        <div class="max-w-[1200px] mx-auto px-8 flex items-center justify-between relative">
+            <a href="index.html" class="flex items-center gap-[10px] no-underline">
+                <div class="w-[36px] h-[36px] bg-amarillo rounded-[6px] flex items-center justify-center font-bebas text-[18px] text-black tracking-normal"><img src="IMG/bardahl-top-logo-mobile.webp" alt="Logo Refaccionaria Leo"></div>
+                <div class="font-bebas text-[22px] tracking-[2px] text-white">Refaccionaria <span class="text-amarillo">Leo</span></div>
+            </a>
+            
+            <ul class="list-none m-0 p-0 hidden md:flex items-center gap-1">
+                <li><a href="index.html" class="block py-[7px] px-4 rounded-[6px] text-[13px] font-semibold tracking-[1.5px] uppercase no-underline text-white/75 transition-all duration-200 hover:text-white hover:bg-white/10">Inicio</a></li>
+                <li><a href="Productos.html" class="block py-[7px] px-4 rounded-[6px] text-[13px] font-semibold tracking-[1.5px] uppercase no-underline text-white/75 transition-all duration-200 hover:text-white hover:bg-white/10">Productos</a></li>
+                <li><a href="Contacto.html" class="block py-[7px] px-4 rounded-[6px] text-[13px] font-semibold tracking-[1.5px] uppercase no-underline transition-all duration-200 bg-amarillo text-black hover:bg-yellow-500">Contacto</a></li>
+                <li><a href="Login.html" class="block py-[7px] px-4 rounded-[6px] text-[13px] font-semibold tracking-[1.5px] uppercase no-underline text-white/75 transition-all duration-200 hover:text-white hover:bg-white/10">Iniciar sesión</a></li>
+            </ul>
+
+            <button id="menu-btn" class="md:hidden flex items-center justify-center p-2 text-white/80 hover:text-amarillo transition-colors focus:outline-none cursor-pointer">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+
+        <div id="mobile-menu" class="hidden absolute top-[100%] left-0 right-0 bg-negro/95 backdrop-blur-[12px] border-b border-amarillo/15 md:hidden shadow-2xl">
+            <ul class="list-none m-0 p-6 flex flex-col gap-3">
+                <li><a href="index.html" class="block py-3 px-4 rounded-lg text-[14px] font-semibold tracking-[1.5px] uppercase text-center text-white/80 hover:bg-white/10 hover:text-white transition-colors">Inicio</a></li>
+                <li><a href="Productos.html" class="block py-3 px-4 rounded-lg text-[14px] font-semibold tracking-[1.5px] uppercase text-center text-white/80 hover:bg-white/10 hover:text-white transition-colors">Productos</a></li>
+                <li><a href="Contacto.html" class="block py-3 px-4 rounded-lg text-[14px] font-semibold tracking-[1.5px] uppercase text-center bg-amarillo text-black">Contacto</a></li>
+                <li><a href="Login.html" class="block py-3 px-4 rounded-lg text-[14px] font-semibold tracking-[1.5px] uppercase text-center text-white/80 hover:bg-white/10 hover:text-white transition-colors">Iniciar sesión</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="pt-[9rem] pb-[5rem] px-8 relative overflow-hidden">
+        <div class="absolute inset-0 bg-[linear-gradient(135deg,#0a0a0a_0%,#111_60%,#0a0a0a_100%)]"></div>
+        <div class="absolute top-[-20%] right-[-5%] w-[650px] h-[650px] bg-[radial-gradient(circle,rgba(250,204,21,0.09)_0%,transparent_65%)] rounded-full pointer-events-none"></div>
+        <div class="absolute bottom-[-20%] left-[-5%] w-[400px] h-[400px] bg-[radial-gradient(circle,rgba(250,204,21,0.05)_0%,transparent_65%)] rounded-full pointer-events-none"></div>
+        <div class="absolute inset-0 bg-[linear-gradient(rgba(250,204,21,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(250,204,21,0.03)_1px,transparent_1px)] bg-[size:60px_60px]"></div>
+        
+        <div class="relative max-w-[1200px] mx-auto text-center flex flex-col items-center">
+            <div class="anim-fade-up inline-flex items-center gap-2 bg-amarillo/12 border border-amarillo/30 py-[6px] px-[18px] rounded-full text-[12px] font-semibold tracking-[2px] uppercase text-amarillo mb-6 pulso-dot before:content-[''] before:w-1.5 before:h-1.5 before:bg-amarillo before:rounded-full">
+                Estamos para ayudarte
+            </div>
+            <h1 class="anim-fade-up-1 font-bebas text-[clamp(56px,8vw,96px)] leading-[0.9] tracking-[3px] mb-5">
+                Hablemos<br><span class="text-amarillo">hoy mismo</span>
+            </h1>
+            <p class="anim-fade-up-2 text-[17px] text-white/50 leading-[1.7] max-w-[520px] mx-auto mb-12">
+                ¿Tienes una duda, necesitas una cotización o quieres saber si tenemos tu refacción? Contáctanos por el medio que prefieras.
+            </p>
+            <div class="anim-fade-up-3 flex justify-center gap-3 flex-wrap">
+                <a href="tel:+521234567890" class="flex items-center gap-2.5 bg-white/5 border border-white/10 rounded-xl py-3.5 px-5 no-underline text-white/70 text-[14px] font-semibold tracking-[0.5px] transition-all duration-200 hover:border-amarillo/35 hover:bg-amarillo/5 hover:text-amarillo hover:-translate-y-0.5 group">
+                    <span class="text-[20px]"></span> Llamar ahora
+                </a>
+                <a href="https://wa.me/521234567890" target="_blank" class="flex items-center gap-2.5 bg-white/5 border border-white/10 rounded-xl py-3.5 px-5 no-underline text-white/70 text-[14px] font-semibold tracking-[0.5px] transition-all duration-200 hover:border-amarillo/35 hover:bg-amarillo/5 hover:text-amarillo hover:-translate-y-0.5 group">
+                    <span class="text-[20px]"></span> WhatsApp
+                </a>
+                <a href="mailto:contacto@refaccionarialeo.mx" class="flex items-center gap-2.5 bg-white/5 border border-white/10 rounded-xl py-3.5 px-5 no-underline text-white/70 text-[14px] font-semibold tracking-[0.5px] transition-all duration-200 hover:border-amarillo/35 hover:bg-amarillo/5 hover:text-amarillo hover:-translate-y-0.5 group">
+                    <span class="text-[20px]"></span> Correo
+                </a>
+                <a href="#mapa" class="flex items-center gap-2.5 bg-white/5 border border-white/10 rounded-xl py-3.5 px-5 no-underline text-white/70 text-[14px] font-semibold tracking-[0.5px] transition-all duration-200 hover:border-amarillo/35 hover:bg-amarillo/5 hover:text-amarillo hover:-translate-y-0.5 group">
+                    <span class="text-[20px]"></span> Cómo llegar
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="max-w-[1200px] mx-auto py-20 px-8 grid grid-cols-1 lg:grid-cols-[1fr_1.15fr] gap-12 items-start">
+            
+            <div class="reveal">
+                <div class="flex items-center gap-4 mb-8">
+                    <div class="flex-1 h-px bg-white/10"></div>
+                    <div class="text-[11px] font-bold tracking-[3px] uppercase text-white/20">Información</div>
+                    <div class="flex-1 h-px bg-white/10"></div>
+                </div>
+                <h2 class="font-bebas text-[42px] tracking-[2px] leading-none mb-3">Encuéntranos<br><span class="text-amarillo">fácilmente</span></h2>
+                <p class="text-[15px] text-white/45 leading-[1.7] mb-10">Visítanos en tienda, llámanos o escríbenos. Respondemos rápido porque sabemos que tu auto no puede esperar.</p>
+
+                <div class="flex flex-col gap-3 mb-10">
+                    <a href="tel:+521234567890" class="flex items-center gap-4 bg-gris-oscuro border border-white/5 rounded-[14px] py-[1.1rem] px-5 no-underline transition-all duration-200 hover:border-amarillo/30 hover:bg-amarillo/5 hover:translate-x-1 group">
+                        <div class="w-[46px] h-[46px] bg-amarillo/10 border border-amarillo/20 rounded-[11px] flex items-center justify-center text-[20px] shrink-0">📞</div>
+                        <div>
+                            <div class="text-[11px] font-bold tracking-[1.5px] uppercase text-white/30 mb-[3px]">Teléfono</div>
+                            <div class="text-[15px] font-semibold text-white">+52 123 456 7890</div>
+                        </div>
+                        <div class="ml-auto text-[20px] text-white/20 transition-all duration-200 group-hover:text-amarillo group-hover:translate-x-1">›</div>
+                    </a>
+                    <a href="https://wa.me/521234567890" target="_blank" class="flex items-center gap-4 bg-gris-oscuro border border-white/5 rounded-[14px] py-[1.1rem] px-5 no-underline transition-all duration-200 hover:border-amarillo/30 hover:bg-amarillo/5 hover:translate-x-1 group">
+                        <div class="w-[46px] h-[46px] bg-amarillo/10 border border-amarillo/20 rounded-[11px] flex items-center justify-center text-[20px] shrink-0">💬</div>
+                        <div>
+                            <div class="text-[11px] font-bold tracking-[1.5px] uppercase text-white/30 mb-[3px]">WhatsApp</div>
+                            <div class="text-[15px] font-semibold text-white">+52 123 456 7890</div>
+                        </div>
+                        <div class="ml-auto text-[20px] text-white/20 transition-all duration-200 group-hover:text-amarillo group-hover:translate-x-1">›</div>
+                    </a>
+                    <a href="mailto:contacto@refaccionarialeo.mx" class="flex items-center gap-4 bg-gris-oscuro border border-white/5 rounded-[14px] py-[1.1rem] px-5 no-underline transition-all duration-200 hover:border-amarillo/30 hover:bg-amarillo/5 hover:translate-x-1 group">
+                        <div class="w-[46px] h-[46px] bg-amarillo/10 border border-amarillo/20 rounded-[11px] flex items-center justify-center text-[20px] shrink-0">✉️</div>
+                        <div>
+                            <div class="text-[11px] font-bold tracking-[1.5px] uppercase text-white/30 mb-[3px]">Correo electrónico</div>
+                            <div class="text-[15px] font-semibold text-white">contacto@refaccionarialeo.mx</div>
+                        </div>
+                        <div class="ml-auto text-[20px] text-white/20 transition-all duration-200 group-hover:text-amarillo group-hover:translate-x-1">›</div>
+                    </a>
+                    <div class="flex items-center gap-4 bg-gris-oscuro border border-white/5 rounded-[14px] py-[1.1rem] px-5 cursor-default">
+                        <div class="w-[46px] h-[46px] bg-amarillo/10 border border-amarillo/20 rounded-[11px] flex items-center justify-center text-[20px] shrink-0">📍</div>
+                        <div>
+                            <div class="text-[11px] font-bold tracking-[1.5px] uppercase text-white/30 mb-[3px]">Dirección</div>
+                            <div class="text-[13px] font-semibold text-white leading-[1.5]">Av. de los Patos M4 L35, Herreros,<br>56334 Chimalhuacán, Méx.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-[11px] font-bold tracking-[3px] uppercase text-white/25 mb-4">Horarios de atención</div>
+                <div class="bg-gris-oscuro border border-white/5 rounded-[14px] overflow-hidden">
+                    <div class="horario-fila flex justify-between items-center py-3 px-[18px] border-b border-white/5 text-[14px] hover:bg-white/5" id="fila-lunes">
+                        <span class="horario-dia text-white/60 font-medium">Lunes</span>
+                        <span class="horario-hora text-white/85 font-semibold">9:00 am – 7:00 pm</span>
+                    </div>
+                    <div class="horario-fila flex justify-between items-center py-3 px-[18px] border-b border-white/5 text-[14px] hover:bg-white/5" id="fila-martes">
+                        <span class="horario-dia text-white/60 font-medium">Martes</span>
+                        <span class="horario-hora text-white/85 font-semibold">9:00 am – 7:00 pm</span>
+                    </div>
+                    <div class="horario-fila flex justify-between items-center py-3 px-[18px] border-b border-white/5 text-[14px] hover:bg-white/5" id="fila-miercoles">
+                        <span class="horario-dia text-white/60 font-medium">Miércoles</span>
+                        <span class="horario-hora text-white/85 font-semibold">9:00 am – 7:00 pm</span>
+                    </div>
+                    <div class="horario-fila flex justify-between items-center py-3 px-[18px] border-b border-white/5 text-[14px] hover:bg-white/5" id="fila-jueves">
+                        <span class="horario-dia text-white/60 font-medium">Jueves</span>
+                        <span class="horario-hora text-white/85 font-semibold">9:00 am – 7:00 pm</span>
+                    </div>
+                    <div class="horario-fila flex justify-between items-center py-3 px-[18px] border-b border-white/5 text-[14px] hover:bg-white/5" id="fila-viernes">
+                        <span class="horario-dia text-white/60 font-medium">Viernes</span>
+                        <span class="horario-hora text-white/85 font-semibold">9:00 am – 7:00 pm</span>
+                    </div>
+                    <div class="horario-fila flex justify-between items-center py-3 px-[18px] border-b border-white/5 text-[14px] hover:bg-white/5" id="fila-sabado">
+                        <span class="horario-dia text-white/60 font-medium">Sábado</span>
+                        <span class="horario-hora text-white/85 font-semibold">9:00 am – 3:00 pm</span>
+                    </div>
+                    <div class="horario-fila cerrado flex justify-between items-center py-3 px-[18px] text-[14px] hover:bg-white/5" id="fila-domingo">
+                        <span class="horario-dia text-white/60 font-medium">Domingo</span>
+                        <span class="horario-hora text-white/85 font-semibold">Cerrado</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reveal">
+                <div class="bg-gris-oscuro border border-white/5 rounded-[20px] p-10 relative overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:h-[3px] before:bg-[linear-gradient(90deg,var(--color-amarillo),rgba(250,204,21,0.3))]">
+                    <h2 class="font-bebas text-[32px] tracking-[2px] mb-2">Envíanos un mensaje</h2>
+                    <p class="text-[14px] text-white/40 leading-[1.6] mb-8">Te respondemos en menos de 24 horas. Para urgencias, llámanos directamente.</p>
+
+                    <div class="mb-[14px]">
+                        <label class="block text-[12px] font-bold tracking-[1.5px] uppercase text-white/40 mb-2">Motivo de contacto</label>
+                        <div class="flex flex-wrap gap-2 mt-1">
+                            <div class="chip activo py-[7px] px-3.5 rounded-lg border border-white/10 bg-white/5 text-[13px] font-semibold text-white/50 cursor-pointer hover:border-amarillo/30 hover:text-white/80" onclick="selChip(this)">Cotización</div>
+                            <div class="chip py-[7px] px-3.5 rounded-lg border border-white/10 bg-white/5 text-[13px] font-semibold text-white/50 cursor-pointer hover:border-amarillo/30 hover:text-white/80" onclick="selChip(this)">Disponibilidad</div>
+                            <div class="chip py-[7px] px-3.5 rounded-lg border border-white/10 bg-white/5 text-[13px] font-semibold text-white/50 cursor-pointer hover:border-amarillo/30 hover:text-white/80" onclick="selChip(this)">Información</div>
+                            <div class="chip py-[7px] px-3.5 rounded-lg border border-white/10 bg-white/5 text-[13px] font-semibold text-white/50 cursor-pointer hover:border-amarillo/30 hover:text-white/80" onclick="selChip(this)">Otro</div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-[14px] mb-[14px]">
+                        <div class="flex flex-col gap-1.5 mb-[14px]">
+                            <label for="nombre" class="text-[12px] font-bold tracking-[1.5px] uppercase text-white/40">Nombre</label>
+                            <input type="text" id="nombre" class="w-full bg-white/5 border border-white/10 rounded-[10px] py-[13px] px-4 text-[15px] text-white font-barlow outline-none transition-all duration-200 focus:border-amarillo/50 focus:bg-amarillo/5 placeholder:text-white/20" placeholder="Tu nombre">
+                        </div>
+                        <div class="flex flex-col gap-1.5 mb-[14px]">
+                            <label for="apellido" class="text-[12px] font-bold tracking-[1.5px] uppercase text-white/40">Apellido</label>
+                            <input type="text" id="apellido" class="w-full bg-white/5 border border-white/10 rounded-[10px] py-[13px] px-4 text-[15px] text-white font-barlow outline-none transition-all duration-200 focus:border-amarillo/50 focus:bg-amarillo/5 placeholder:text-white/20" placeholder="Tu apellido">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-[14px] mb-[14px]">
+                        <div class="flex flex-col gap-1.5 mb-[14px]">
+                            <label for="tel" class="text-[12px] font-bold tracking-[1.5px] uppercase text-white/40">Teléfono</label>
+                            <input type="tel" id="tel" class="w-full bg-white/5 border border-white/10 rounded-[10px] py-[13px] px-4 text-[15px] text-white font-barlow outline-none transition-all duration-200 focus:border-amarillo/50 focus:bg-amarillo/5 placeholder:text-white/20" placeholder="+52 55 0000 0000">
+                        </div>
+                        <div class="flex flex-col gap-1.5 mb-[14px]">
+                            <label for="email" class="text-[12px] font-bold tracking-[1.5px] uppercase text-white/40">Correo electrónico</label>
+                            <input type="email" id="email" class="w-full bg-white/5 border border-white/10 rounded-[10px] py-[13px] px-4 text-[15px] text-white font-barlow outline-none transition-all duration-200 focus:border-amarillo/50 focus:bg-amarillo/5 placeholder:text-white/20" placeholder="tu@correo.com">
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col gap-1.5 mb-[14px]">
+                        <label for="auto" class="text-[12px] font-bold tracking-[1.5px] uppercase text-white/40">Marca y modelo de tu auto (opcional)</label>
+                        <input type="text" id="auto" class="w-full bg-white/5 border border-white/10 rounded-[10px] py-[13px] px-4 text-[15px] text-white font-barlow outline-none transition-all duration-200 focus:border-amarillo/50 focus:bg-amarillo/5 placeholder:text-white/20" placeholder="Ej: Nissan Tsuru 2015, Chevy 2004...">
+                    </div>
+
+                    <div class="flex flex-col gap-1.5 mb-[14px]">
+                        <label for="mensaje" class="text-[12px] font-bold tracking-[1.5px] uppercase text-white/40">Tu mensaje</label>
+                        <textarea id="mensaje" class="w-full bg-white/5 border border-white/10 rounded-[10px] py-[13px] px-4 text-[15px] text-white font-barlow outline-none transition-all duration-200 focus:border-amarillo/50 focus:bg-amarillo/5 placeholder:text-white/20 resize-y min-h-[120px] leading-[1.6]" placeholder="Cuéntanos qué necesitas. Mientras más detalle, mejor te podemos ayudar..."></textarea>
+                    </div>
+
+                    <button class="w-full bg-amarillo text-black font-barlow font-bold text-[15px] tracking-[2px] uppercase py-[15px] px-6 rounded-[10px] border-none cursor-pointer transition-all duration-200 mt-2 shadow-[0_4px_20px_rgba(250,204,21,0.25)] flex items-center justify-center gap-[10px] hover:bg-[#fde047] hover:-translate-y-0.5 hover:shadow-[0_8px_30px_rgba(250,204,21,0.4)] active:translate-y-0 group btn-enviar" id="btn-enviar" onclick="enviarForm()">
+                        <span>Enviar mensaje</span>
+                        <span class="text-[18px] transition-transform duration-200 group-hover:translate-x-1">→</span>
+                    </button>
+                    <p class="text-[12px] text-white/20 text-center mt-4 leading-[1.6]">Tu información es confidencial y solo se usará para responderte. No compartimos datos con terceros.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="mapa">
+        <div class="max-w-[1200px] mx-auto px-8 pb-20 reveal">
+            <div class="flex items-end justify-between mb-6 gap-4 flex-wrap">
+                <div>
+                    <h2 class="font-bebas text-[36px] tracking-[2px] leading-none">Cómo <span class="text-amarillo">llegar</span></h2>
+                    <p class="text-[14px] text-white/35 mt-1">A 5 minutos del centro de Chimalhuacán</p>
+                </div>
+                <div class="text-[14px] text-white/40 flex items-center gap-2 before:content-['📍'] before:text-[16px]">Av. de los Patos M4 L35, Herreros, 56334 Chimalhuacán, Méx.</div>
+            </div>
+            <div class="w-full h-[380px] rounded-[18px] overflow-hidden border border-white/5">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3762.47739266527!2d-98.94940962411016!3d19.434973640603893!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d1e38ccc08c36d%3A0x5697fc3cc06b7c52!2sRefaccionaria%20Leo!5e0!3m2!1ses!2smx!4v1778628328421!5m2!1ses!2smx"
+                    class="w-full h-full border-0 block"
+                    allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-amarillo py-20 px-8 text-center">
+        <h2 class="font-bebas text-[clamp(36px,5vw,60px)] text-black tracking-[2px] mb-3">¿Listo para mantener tu auto?</h2>
+        <p class="text-[16px] text-black/60 mb-8 max-w-[460px] mx-auto">Visítanos hoy o explora nuestro catálogo de productos. Tenemos lo que necesitas.</p>
+        <div class="flex gap-3 justify-center flex-wrap">
+            <a href="Productos.html" class="bg-black text-amarillo font-bold text-[13px] tracking-[2px] uppercase py-[13px] px-[30px] rounded-lg no-underline transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.4)]">Ver productos</a>
+            <a href="tel:+521234567890" class="bg-black/10 border border-black/15 text-black/70 font-bold text-[13px] tracking-[2px] uppercase py-[13px] px-[30px] rounded-lg no-underline transition-colors duration-200 hover:bg-black/15">Llamar ahora</a>
+        </div>
+    </section>
+
+    <footer class="bg-gris-oscuro border-t border-white/5">
+        <div class="max-w-[1200px] mx-auto pt-10 pb-6 px-8 flex items-center justify-between gap-8 flex-wrap">
+            <div class="font-bebas text-[22px] tracking-[2px] text-white">Refaccionaria <span class="text-amarillo">Leo</span></div>
+            <div class="flex gap-1">
+                <a href="index.html" class="py-[7px] px-3.5 rounded-[6px] text-[13px] font-semibold tracking-[1px] uppercase no-underline text-white/40 transition-colors duration-200 hover:text-white hover:bg-white/5">Inicio</a>
+                <a href="Productos.html" class="py-[7px] px-3.5 rounded-[6px] text-[13px] font-semibold tracking-[1px] uppercase no-underline text-white/40 transition-colors duration-200 hover:text-white hover:bg-white/5">Productos</a>
+                <a href="Contacto.html" class="py-[7px] px-3.5 rounded-[6px] text-[13px] font-semibold tracking-[1px] uppercase no-underline text-white/40 transition-colors duration-200 hover:text-white hover:bg-white/5">Contacto</a>
+                <a href="Login.html" class="py-[7px] px-3.5 rounded-[6px] text-[13px] font-semibold tracking-[1px] uppercase no-underline text-white/40 transition-colors duration-200 hover:text-white hover:bg-white/5">Iniciar sesión</a>
+            </div>
+        </div>
+        <div class="border-t border-white/5 max-w-[1200px] mx-auto py-6 px-8 flex items-center justify-between text-[13px] text-white/20">
+            <span>© 2025 Refaccionaria Leo — Todos los derechos reservados</span>
+            <span>Chimalhuacán, Estado de México</span>
+        </div>
+    </footer>
+
+    <div class="toast fixed bottom-8 right-8 bg-[#1a1a1a] border border-[#4ade80]/35 rounded-[14px] py-[1.1rem] px-6 flex items-center gap-3.5 text-[14px] text-white z-[300] max-w-[340px] shadow-[0_8px_32px_rgba(0,0,0,0.5)]" id="toast">
+        <div class="text-[28px] shrink-0">✅</div>
+        <div>
+            <div class="font-bold mb-[3px]">¡Mensaje enviado!</div>
+            <div class="text-[13px] text-white/50">Te responderemos a la brevedad. ¡Gracias por contactarnos!</div>
+        </div>
+    </div>
+
+    <script>
+        function selChip(el) {
+            document.querySelectorAll('.chip').forEach(c => c.classList.remove('activo'));
+            el.classList.add('activo');
+        }
+
+        function enviarForm() {
+            const nombre = document.getElementById('nombre').value.trim();
+            const btn = document.getElementById('btn-enviar');
+            if (!nombre) {
+                const inp = document.getElementById('nombre');
+                inp.style.borderColor = 'rgba(248,113,113,0.6)';
+                inp.focus();
+                setTimeout(() => inp.style.borderColor = '', 2200);
+                return;
+            }
+            btn.classList.add('enviando');
+            btn.innerHTML = '<span>Enviando...</span>';
+            setTimeout(() => {
+                btn.classList.remove('enviando');
+                btn.innerHTML = '<span>¡Mensaje enviado!</span><span>✓</span>';
+                btn.style.background = 'rgba(74,222,128,0.18)';
+                btn.style.color = '#4ade80';
+                btn.style.boxShadow = '0 4px 20px rgba(74,222,128,0.15)';
+                const toast = document.getElementById('toast');
+                toast.classList.add('visible');
+                setTimeout(() => toast.classList.remove('visible'), 4000);
+                setTimeout(() => {
+                    btn.innerHTML = '<span>Enviar mensaje</span><span class="text-[18px] transition-transform duration-200 group-hover:translate-x-1">→</span>';
+                    btn.style.background = '';
+                    btn.style.color = '';
+                    btn.style.boxShadow = '';
+                }, 5000);
+            }, 1400);
+        }
+
+        const mapaDias = { 0:'domingo', 1:'lunes', 2:'martes', 3:'miercoles', 4:'jueves', 5:'viernes', 6:'sabado' };
+        const diaHoy = mapaDias[new Date().getDay()];
+        const filaHoy = document.getElementById('fila-' + diaHoy);
+        if (filaHoy && !filaHoy.classList.contains('cerrado')) {
+            filaHoy.classList.add('hoy');
+            const diaSpan = filaHoy.querySelector('.horario-dia');
+            const badge = document.createElement('span');
+            badge.className = 'badge-hoy';
+            badge.textContent = 'Hoy';
+            diaSpan.appendChild(badge);
+        }
+
+        const reveals = document.querySelectorAll('.reveal');
+        const obs = new IntersectionObserver(entries => {
+            entries.forEach((e, i) => {
+                if (e.isIntersecting) {
+                    setTimeout(() => e.target.classList.add('visible'), i * 100);
+                    obs.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.08 });
+        reveals.forEach(el => obs.observe(el));
+
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>

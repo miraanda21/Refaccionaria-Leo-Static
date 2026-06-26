@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Dueño | Refaccionaria Leo</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style type="text/tailwindcss">
+        @theme {
+            --color-amarillo: #FACC15;
+            --color-negro: #0a0a0a;
+            --color-gris-oscuro: #1a1a1a;
+            --color-gris-medio: #2a2a2a;
+            --color-gris-claro: #f5f5f0;
+            --font-barlow: 'Barlow', sans-serif;
+            --font-bebas: 'Bebas Neue', sans-serif;
+        }
+        .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+        .reveal.visible { opacity: 1; transform: none; }
+        
+        /* Tablas oscuras */
+        table { width: 100%; border-collapse: collapse; }
+        th { background: rgba(255,255,255,0.02); color: rgba(255,255,255,0.4); text-transform: uppercase; font-size: 11px; letter-spacing: 1.5px; padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        td { padding: 16px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 14px; color: rgba(255,255,255,0.8); }
+        tr:hover td { background: rgba(255,255,255,0.01); }
+        
+        /* Badges */
+        .badge { padding: 4px 10px; border-radius: 100px; font-size: 10px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; border: 1px solid transparent; }
+        .badge.pendiente { background: rgba(251,146,60,0.1); color: #fb923c; border-color: rgba(251,146,60,0.2); }
+        .badge.pagado { background: rgba(74,222,128,0.1); color: #4ade80; border-color: rgba(74,222,128,0.2); }
+        .badge.en_linea { background: rgba(96,165,250,0.1); color: #60a5fa; border-color: rgba(96,165,250,0.2); }
+        .badge.en_caja { background: rgba(250,204,21,0.1); color: #FACC15; border-color: rgba(250,204,21,0.2); }
+        
+        select option { background-color: #0a0a0a; color: white; }
+    </style>
+</head>
+<body class="font-barlow bg-negro text-gris-claro overflow-x-hidden m-0 p-0 box-border min-h-screen flex flex-col">
+
+    <!-- FALLBACK SEGURIDAD -->
+    <div id="fallback-msg" class="min-h-screen flex items-center justify-center text-white/50 text-[18px] tracking-[2px] font-bebas uppercase">Verificando credenciales de administrador...</div>
+
+    <div id="admin-content" class="hidden flex-col min-h-screen">
+        <!-- NAV STANDARD -->
+        <nav class="fixed top-0 left-0 right-0 z-[100] bg-negro/92 backdrop-blur-[12px] border-b border-amarillo/15 py-[14px]">
+            <div class="max-w-[1200px] mx-auto px-8 flex items-center justify-between relative">
+                <a href="index.html" class="flex items-center gap-[10px] no-underline">
+                    <div class="w-[36px] h-[36px] bg-amarillo rounded-[6px] flex items-center justify-center font-bebas text-[18px] text-black">🛡️</div>
+                    <div class="font-bebas text-[22px] tracking-[2px] text-white">Refaccionaria <span class="text-amarillo">Leo</span></div>
+                </a>
+                <ul class="list-none m-0 p-0 hidden md:flex items-center gap-1">
+                    <li><a href="index.html" class="block py-[7px] px-4 rounded-[6px] text-[13px] font-semibold tracking-[1.5px] uppercase no-underline text-white/75 transition-colors duration-200 hover:text-white hover:bg-white/10">Volver a Tienda</a></li>
+                    <li><button onclick="logout()" class="block py-[7px] px-4 rounded-[6px] text-[13px] font-semibold tracking-[1.5px] uppercase no-underline transition-colors duration-200 bg-red-500/20 text-red-400 hover:bg-red-500/40 cursor-pointer">Cerrar Sesión</button></li>
+                </ul>
+            </div>
+        </nav>
+
+        <section class="pt-[9rem] pb-[2rem] px-8 relative overflow-hidden flex-none">
+            <div class="absolute inset-0 bg-[linear-gradient(135deg,#0a0a0a_0%,#111_60%,#0a0a0a_100%)]"></div>
+            <div class="relative max-w-[1200px] mx-auto">
+                <div class="inline-flex items-center gap-2 bg-amarillo/12 border border-amarillo/30 py-1.5 px-3.5 rounded-full text-[12px] font-semibold tracking-[2px] uppercase text-amarillo mb-4">Administración</div>
+                <h1 class="font-bebas text-[clamp(40px,6vw,60px)] tracking-[2px] leading-[0.95] mb-2">Panel de <span class="text-amarillo">Dueño</span></h1>
+                <p class="text-[16px] text-white/50" id="admin-name">Bienvenido.</p>
+            </div>
+        </section>
+
+        <main class="flex-grow max-w-[1200px] w-full mx-auto px-8 pb-20 relative z-10">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-8 mb-8 reveal">
+                
+                <!-- ALERTAS DE STOCK -->
+                <div class="bg-gris-oscuro border border-white/5 rounded-2xl p-8 relative overflow-hidden group hover:border-red-500/30 transition-colors">
+                    <div class="absolute top-0 left-0 w-full h-[3px] bg-red-500/50"></div>
+                    <h3 class="font-bebas text-[28px] tracking-[2px] mb-6 flex items-center gap-2">⚠️ Alertas de <span class="text-white">Inventario</span></h3>
+                    <div class="overflow-x-auto hide-scrollbar border border-white/5 rounded-xl">
+                        <table id="tabla-stock" class="text-left w-full whitespace-nowrap">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Producto</th>
+                                    <th>Stock</th>
+                                    <th>Mínimo</th>
+                                    <th>Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- AJUSTE MANUAL -->
+                <div class="bg-gris-oscuro border border-white/5 rounded-2xl p-8 relative overflow-hidden hover:border-amarillo/30 transition-colors">
+                    <div class="absolute top-0 left-0 w-full h-[3px] bg-amarillo"></div>
+                    <h3 class="font-bebas text-[28px] tracking-[2px] mb-6 flex items-center gap-2">📦 Ajustar <span class="text-amarillo">Stock</span></h3>
+                    
+                    <form id="form-ajuste" onsubmit="procesarAjusteStock(event)">
+                        <div class="mb-4">
+                            <label class="block text-[11px] font-bold tracking-[1.5px] uppercase text-white/40 mb-2">ID Producto</label>
+                            <input type="number" id="ajuste-id" required class="w-full bg-white/5 border border-white/10 rounded-[10px] py-3 px-4 text-[14px] text-white font-barlow outline-none focus:border-amarillo/50 focus:bg-amarillo/5">
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-[11px] font-bold tracking-[1.5px] uppercase text-white/40 mb-2">Cantidad (Entrada/Salida)</label>
+                            <input type="number" id="ajuste-cambio" required placeholder="Ej. 10 o -2" class="w-full bg-white/5 border border-white/10 rounded-[10px] py-3 px-4 text-[14px] text-white font-barlow outline-none focus:border-amarillo/50 focus:bg-amarillo/5">
+                        </div>
+                        <div class="mb-6">
+                            <label class="block text-[11px] font-bold tracking-[1.5px] uppercase text-white/40 mb-2">Motivo</label>
+                            <select id="ajuste-motivo" required class="w-full bg-white/5 border border-white/10 rounded-[10px] py-3 px-4 text-[14px] text-white font-barlow outline-none focus:border-amarillo/50 focus:bg-amarillo/5 cursor-pointer">
+                                <option value="compra_proveedor">Entrada - Proveedor</option>
+                                <option value="ajuste_admin">Ajuste - Físico</option>
+                                <option value="devolucion">Entrada - Devolución</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="w-full bg-amarillo text-black font-barlow font-bold text-[14px] tracking-[2px] uppercase py-[12px] rounded-[10px] border-none cursor-pointer transition-all hover:bg-[#fde047] hover:-translate-y-0.5 shadow-[0_4px_20px_rgba(250,204,21,0.25)]">
+                            Registrar Movimiento
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- TABLA DE PEDIDOS -->
+            <div class="bg-gris-oscuro border border-white/5 rounded-2xl p-8 reveal">
+                <h3 class="font-bebas text-[28px] tracking-[2px] mb-6 border-b border-white/10 pb-4">Últimas <span class="text-white">Ventas y Pedidos</span></h3>
+                <div class="overflow-x-auto border border-white/5 rounded-xl hide-scrollbar">
+                    <table id="tabla-pedidos" class="w-full whitespace-nowrap">
+                        <thead>
+                            <tr>
+                                <th>Pedido #</th>
+                                <th>Origen</th>
+                                <th>Fecha</th>
+                                <th>Cliente</th>
+                                <th>Total</th>
+                                <th>Pago</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="data.js"></script>
+    <script>
+        let usuarioSesion = null;
+
+        document.addEventListener("DOMContentLoaded", () => {
+            usuarioSesion = getCurrentUser();
+            if (!usuarioSesion) {
+                window.location.href = "login.html";
+                return;
+            }
+
+            if (usuarioSesion.rol != 2) {
+                alert("Acceso denegado. Se requiere cuenta de Dueño/Administrador.");
+                window.location.href = "index.html";
+                return;
+            }
+
+            document.getElementById("fallback-msg").style.display = "none";
+            document.getElementById("admin-content").classList.remove("hidden");
+            document.getElementById("admin-content").classList.add("flex");
+            document.getElementById("admin-name").innerText = `Logueado como: ${usuarioSesion.nombre} ${usuarioSesion.apellidos}`;
+
+            cargarDashboard();
+            setTimeout(() => document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible')), 100);
+        });
+
+        function cargarDashboard() {
+            const tbStock = document.querySelector("#tabla-stock tbody");
+            tbStock.innerHTML = "";
+            const bajos = CATALOGO.filter(p => obtenerStock(p.id) < 20);
+            if (bajos.length === 0) {
+                tbStock.innerHTML = `<tr><td colspan="5" class="text-center text-[#4ade80]">✔ Inventario sano. No hay alertas.</td></tr>`;
+            } else {
+                bajos.forEach(p => {
+                    const stockActual = obtenerStock(p.id);
+                    tbStock.innerHTML += `
+                        <tr>
+                            <td class="font-bold">#${p.id}</td>
+                            <td>${p.nombre}</td>
+                            <td class="text-red-400 font-bold">${stockActual}</td>
+                            <td class="text-white/40">20</td>
+                            <td><button onclick="document.getElementById('ajuste-id').value=${p.id};document.getElementById('ajuste-cambio').focus()" class="bg-white/10 text-white text-[10px] font-bold uppercase tracking-[1px] py-1.5 px-3 rounded cursor-pointer hover:bg-white/20 transition">Surtir</button></td>
+                        </tr>
+                    `;
+                });
+            }
+
+            const tbPedidos = document.querySelector("#tabla-pedidos tbody");
+            tbPedidos.innerHTML = "";
+            const pedidos = getOrders();
+            if (pedidos.length === 0) {
+                tbPedidos.innerHTML = `<tr><td colspan="6" class="text-center">Aún no hay pedidos registrados.</td></tr>`;
+            } else {
+                pedidos.slice(-20).reverse().forEach(ped => {
+                    const fmtTotal = formatearMXN(ped.total);
+                    tbPedidos.innerHTML += `
+                        <tr>
+                            <td class="font-bold text-amarillo">#${ped.id_pedido}</td>
+                            <td><span class="badge en_linea">en línea</span></td>
+                            <td class="text-white/60 text-[13px]">${ped.fecha}</td>
+                            <td>${ped.cliente}</td>
+                            <td class="font-bold text-white">${fmtTotal}</td>
+                            <td><span class="badge ${ped.estado === 'pagado' ? 'pagado' : 'pendiente'}">${ped.estado}</span></td>
+                            <td><button onclick="descargarPedidoTxt(${JSON.stringify(ped).replace(/"/g, '&quot;')})" class="text-[11px] text-amarillo bg-amarillo/10 border border-amarillo/20 py-1 px-2.5 rounded cursor-pointer hover:bg-amarillo/20">.txt</button></td>
+                        </tr>
+                    `;
+                });
+            }
+        }
+
+        function procesarAjusteStock(event) {
+            event.preventDefault();
+            const id = parseInt(document.getElementById("ajuste-id").value);
+            const cambio = parseInt(document.getElementById("ajuste-cambio").value);
+            const motivo = document.getElementById("ajuste-motivo").value;
+
+            const prod = CATALOGO.find(p => p.id === id);
+            if (!prod) {
+                alert("Producto no encontrado.");
+                return;
+            }
+
+            const nuevoStock = ajustarStock(id, cambio);
+
+            alert(`Stock de "${prod.nombre}" ajustado a ${nuevoStock}. Motivo: ${motivo.replace('_', ' ')}`);
+            document.getElementById("form-ajuste").reset();
+            cargarDashboard();
+        }
+
+        function logout() {
+            localStorage.removeItem('rl_sesion');
+            window.location.href = "login.html";
+        }
+    </script>
+</body>
+</html>

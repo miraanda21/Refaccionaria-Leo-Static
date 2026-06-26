@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos | Refaccionaria Leo</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style type="text/tailwindcss">
+        @theme {
+            --color-amarillo: #FACC15;
+            --color-negro: #0a0a0a;
+            --color-gris-oscuro: #1a1a1a;
+            --color-gris-medio: #2a2a2a;
+            --color-gris-claro: #f5f5f0;
+            --font-barlow: 'Barlow', sans-serif;
+            --font-bebas: 'Bebas Neue', sans-serif;
+        }
+
+        .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+        .reveal.visible { opacity: 1; transform: none; }
+        
+        .grupo-categoria { transition: opacity 0.3s; }
+        .grupo-categoria.oculto { display: none; }
+
+        .filtro-btn::after {
+            content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+            background: var(--color-amarillo); transform: scaleX(0); transition: transform 0.2s;
+        }
+        .filtro-btn.activo { color: var(--color-amarillo); }
+        .filtro-btn.activo::after { transform: scaleX(1); }
+
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .toast { transform: translateY(100px); opacity: 0; transition: transform 0.4s ease, opacity 0.4s ease; pointer-events: none; }
+        .toast.visible { transform: translateY(0); opacity: 1; }
+    </style>
+</head>
+<body class="font-barlow bg-negro text-gris-claro overflow-x-hidden m-0 p-0 box-border">
+
+    <nav class="fixed top-0 left-0 right-0 z-[100] bg-negro/92 backdrop-blur-[12px] border-b border-amarillo/15 py-[14px]">
+        <div class="max-w-[1200px] mx-auto px-8 flex items-center justify-between relative">
+            <a href="index.html" class="flex items-center gap-[10px] no-underline">
+                <div class="w-[36px] h-[36px] bg-amarillo rounded-[6px] flex items-center justify-center font-bebas text-[18px] text-black"><img src="IMG/bardahl-top-logo-mobile.webp" alt="Logo Refaccionaria Leo"></div>
+                <div class="font-bebas text-[22px] tracking-[2px] text-white">Refaccionaria <span class="text-amarillo">Leo</span></div>
+            </a>
+            
+            <ul class="list-none m-0 p-0 hidden md:flex items-center gap-1">
+                <li><a href="index.html" class="block py-[7px] px-4 rounded-[6px] text-[13px] font-semibold tracking-[1.5px] uppercase no-underline text-white/75 transition-colors duration-200 hover:text-white hover:bg-white/10">Inicio</a></li>
+                <li><a href="Productos.html" class="block py-[7px] px-4 rounded-[6px] text-[13px] font-semibold tracking-[1.5px] uppercase no-underline transition-colors duration-200 bg-amarillo text-black hover:bg-yellow-500">Productos</a></li>
+                <li><a href="Contacto.html" class="block py-[7px] px-4 rounded-[6px] text-[13px] font-semibold tracking-[1.5px] uppercase no-underline text-white/75 transition-colors duration-200 hover:text-white hover:bg-white/10">Contacto</a></li>
+                <li><a href="Login.html" class="block py-[7px] px-4 rounded-[6px] text-[13px] font-semibold tracking-[1.5px] uppercase no-underline text-white/75 transition-colors duration-200 hover:text-white hover:bg-white/10">Iniciar sesión</a></li>
+            </ul>
+
+            <button id="menu-btn" class="md:hidden flex items-center justify-center p-2 text-white/80 hover:text-amarillo transition-colors focus:outline-none cursor-pointer">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+
+        <div id="mobile-menu" class="hidden absolute top-[100%] left-0 right-0 bg-negro/95 backdrop-blur-[12px] border-b border-amarillo/15 md:hidden shadow-2xl">
+            <ul class="list-none m-0 p-6 flex flex-col gap-3">
+                <li><a href="index.html" class="block py-3 px-4 rounded-lg text-[14px] font-semibold tracking-[1.5px] uppercase text-center text-white/80 hover:bg-white/10 hover:text-white transition-colors">Inicio</a></li>
+                <li><a href="Productos.html" class="block py-3 px-4 rounded-lg text-[14px] font-semibold tracking-[1.5px] uppercase text-center bg-amarillo text-black">Productos</a></li>
+                <li><a href="Contacto.html" class="block py-3 px-4 rounded-lg text-[14px] font-semibold tracking-[1.5px] uppercase text-center text-white/80 hover:bg-white/10 hover:text-white transition-colors">Contacto</a></li>
+                <li><a href="Login.html" class="block py-3 px-4 rounded-lg text-[14px] font-semibold tracking-[1.5px] uppercase text-center text-white/80 hover:bg-white/10 hover:text-white transition-colors">Iniciar sesión</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="pt-[9rem] pb-[4rem] px-8 relative overflow-hidden">
+        <div class="absolute inset-0 bg-[linear-gradient(135deg,#0a0a0a_0%,#111_60%,#0a0a0a_100%)]"></div>
+        <div class="absolute top-[-30%] right-[-5%] w-[600px] h-[600px] bg-[radial-gradient(circle,rgba(250,204,21,0.1)_0%,transparent_65%)] rounded-full pointer-events-none"></div>
+        <div class="absolute inset-0 bg-[linear-gradient(rgba(250,204,21,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(250,204,21,0.03)_1px,transparent_1px)] bg-[size:60px_60px]"></div>
+        
+        <div class="relative max-w-[1200px] mx-auto flex flex-col md:flex-row items-start md:items-end justify-between gap-8">
+            <div>
+                <div class="inline-flex items-center gap-2 bg-amarillo/12 border border-amarillo/30 py-1.5 px-3.5 rounded-full text-[12px] font-semibold tracking-[2px] uppercase text-amarillo mb-4">Catálogo completo</div>
+                <h1 class="font-bebas text-[clamp(48px,7vw,80px)] tracking-[2px] leading-[0.95] mb-4">Nuestros<br><span class="text-amarillo">productos</span></h1>
+                <p class="text-[16px] text-white/50 max-w-[480px] leading-[1.7]">Todo lo que tu vehículo necesita en un solo lugar. Refacciones de calidad para las marcas más populares del mercado mexicano.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="bg-gris-oscuro border-y border-white/5 sticky top-[64px] md:top-[68px] z-50">
+        <div class="max-w-[1200px] mx-auto px-8 flex items-center gap-2 overflow-x-auto hide-scrollbar">
+            <button class="flex items-center gap-2 py-3.5 px-5 text-[13px] font-semibold tracking-[1px] uppercase whitespace-nowrap bg-transparent border-none text-white/45 cursor-pointer relative transition-colors duration-200 hover:text-white/80 font-barlow filtro-btn activo" data-cat="todos" onclick="filtrar(this)">
+                <span class="text-[16px]"></span> Todos
+            </button>
+            <button class="flex items-center gap-2 py-3.5 px-5 text-[13px] font-semibold tracking-[1px] uppercase whitespace-nowrap bg-transparent border-none text-white/45 cursor-pointer relative transition-colors duration-200 hover:text-white/80 font-barlow filtro-btn" data-cat="aceites" onclick="filtrar(this)">
+                <span class="text-[16px]"></span> Aceites y lubricantes
+            </button>
+            <button class="flex items-center gap-2 py-3.5 px-5 text-[13px] font-semibold tracking-[1px] uppercase whitespace-nowrap bg-transparent border-none text-white/45 cursor-pointer relative transition-colors duration-200 hover:text-white/80 font-barlow filtro-btn" data-cat="filtros" onclick="filtrar(this)">
+                <span class="text-[16px]"></span> Filtros
+            </button>
+            <button class="flex items-center gap-2 py-3.5 px-5 text-[13px] font-semibold tracking-[1px] uppercase whitespace-nowrap bg-transparent border-none text-white/45 cursor-pointer relative transition-colors duration-200 hover:text-white/80 font-barlow filtro-btn" data-cat="accesorios" onclick="filtrar(this)">
+                <span class="text-[16px]"></span> Accesorios
+            </button>
+            <button class="flex items-center gap-2 py-3.5 px-5 text-[13px] font-semibold tracking-[1px] uppercase whitespace-nowrap bg-transparent border-none text-white/45 cursor-pointer relative transition-colors duration-200 hover:text-white/80 font-barlow filtro-btn" data-cat="bandas" onclick="filtrar(this)">
+                <span class="text-[16px]"></span> Bandas y transmisión
+            </button>
+            <button class="flex items-center gap-2 py-3.5 px-5 text-[13px] font-semibold tracking-[1px] uppercase whitespace-nowrap bg-transparent border-none text-white/45 cursor-pointer relative transition-colors duration-200 hover:text-white/80 font-barlow filtro-btn" data-cat="electrico" onclick="filtrar(this)">
+                <span class="text-[16px]"></span> Sistema eléctrico
+            </button>
+        </div>
+    </div>
+
+    <main class="max-w-[1200px] mx-auto py-12 px-8 pb-20">
+
+        <div class="grupo-categoria reveal mb-16" id="grupo-aceites" data-grupo="aceites">
+            <div class="flex items-center gap-4 mb-6">
+                <div class="w-11 h-11 bg-amarillo/12 border border-amarillo/25 rounded-lg flex items-center justify-center text-[20px]">🛢️</div>
+                <div class="font-bebas text-[28px] tracking-[2px] text-white">Aceites y lubricantes</div>
+                <div class="flex-1 h-px bg-white/5"></div>
+                <div class="text-[12px] text-white/30 font-semibold tracking-[1px]">24 productos</div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                
+                <div class="flex flex-col md:flex-row md:col-span-2 bg-gris-oscuro border border-white/5 rounded-2xl overflow-hidden transition-all duration-300 cursor-default hover:border-amarillo/30 hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,0.4),0_0_0_1px_rgba(250,204,21,0.1)] group">
+                    <div class="h-[160px] md:h-auto md:w-[240px] shrink-0 flex items-center justify-center relative overflow-hidden bg-[linear-gradient(135deg,#1a1208_0%,#1a1a1a_100%)]">
+                        <div class="absolute w-[120px] h-[120px] rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-15 bg-[#FACC15]"></div>
+                        <div class="text-[72px] md:text-[90px] relative z-10 transition-transform duration-300 drop-shadow-[0_8px_16px_rgba(0,0,0,0.5)] group-hover:scale-110 group-hover:-translate-y-1">🛢️</div>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex items-start justify-between gap-2 mb-1.5">
+                            <div class="text-[16px] font-bold text-white leading-tight">Aceite de motor sintético 5W-30</div>
+                            <span class="text-[11px] font-bold tracking-[1px] uppercase py-0.5 px-2 rounded-full border whitespace-nowrap shrink-0 bg-amarillo/12 text-amarillo border-amarillo/25">Más vendido</span>
+                        </div>
+                        <div class="text-[13px] text-white/45 leading-[1.6] mb-4 flex-1">Aceite sintético de alto rendimiento para motores modernos. Protección superior en frío y calor extremo.</div>
+                        <div class="flex items-center justify-between pt-3 border-t border-white/5">
+                            <div class="flex items-center gap-1.5 text-[12px] text-white/35 font-semibold before:content-[''] before:w-1.5 before:h-1.5 before:bg-[#4ade80] before:rounded-full">En existencia</div>
+                            <button class="text-[12px] font-bold tracking-[1px] uppercase text-amarillo bg-amarillo/10 border border-amarillo/20 py-1.5 px-3.5 rounded-md transition-all duration-200 cursor-pointer font-barlow hover:bg-amarillo/20 hover:border-amarillo/40" onclick="cotizar('Aceite de motor sintético 5W-30')">Cotizar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col bg-gris-oscuro border border-white/5 rounded-2xl overflow-hidden transition-all duration-300 hover:border-amarillo/30 hover:-translate-y-1 group">
+                    <div class="h-[160px] flex items-center justify-center relative overflow-hidden bg-[linear-gradient(135deg,#1a1208_0%,#1a1a1a_100%)]">
+                        <img src="IMG/Monogrado-40-1lt-removebg-preview-convertido-de-png.webp" alt="Aceite Quaker Monogrado 40 API SL 1L" class="relative z-10 transition-transform duration-300 group-hover:scale-110">
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex items-start justify-between gap-2 mb-1.5">
+                            <div class="text-[16px] font-bold text-white leading-tight">Quaker Monogrado 40 API SL</div><span class="text-[11px] font-bold tracking-[1px] uppercase py-0.5 px-2 rounded-full border bg-amarillo/12 text-amarillo border-amarillo/25">1 Litro</span>
+                        </div>
+                        <div class="text-[13px] text-white/45 leading-[1.6] mb-4 flex-1">Aceite monogrado para protección básica.</div>
+                        <div class="flex items-center justify-between pt-3 border-t border-white/5">
+                            <div class="flex items-center gap-1.5 text-[12px] text-white/35 font-semibold before:content-[''] before:w-1.5 before:h-1.5 before:bg-[#4ade80] before:rounded-full">En existencia</div>
+                            <button class="text-[12px] font-bold tracking-[1px] uppercase text-amarillo bg-amarillo/10 border border-amarillo/20 py-1.5 px-3.5 rounded-md hover:bg-amarillo/20 hover:border-amarillo/40" onclick="cotizar('Quaker Monogrado 40 API SL 1L')">Cotizar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col bg-gris-oscuro border border-white/5 rounded-2xl overflow-hidden transition-all duration-300 hover:border-amarillo/30 hover:-translate-y-1 group">
+                    <div class="h-[160px] flex items-center justify-center relative overflow-hidden bg-[linear-gradient(135deg,#1a1208_0%,#1a1a1a_100%)]">
+                        <img src="IMG/Monogrado-60-1lt.webp" alt="Aceite monogrado Quaker Monogrado 60 API SL 1L" class="relative z-10 w-32 h-32 object-contain">
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex items-start justify-between gap-2 mb-1.5">
+                            <div class="text-[16px] font-bold text-white leading-tight">Quaker Monogrado 60 API SL</div><span class="text-[11px] font-bold tracking-[1px] uppercase py-0.5 px-2 rounded-full border bg-amarillo/12 text-amarillo border-amarillo/25">1 Litro</span>
+                        </div>
+                        <div class="text-[13px] text-white/45 leading-[1.6] mb-4 flex-1">Aceite monogrado para alto kilometraje.</div>
+                        <div class="flex items-center justify-between pt-3 border-t border-white/5">
+                            <div class="flex items-center gap-1.5 text-[12px] text-white/35 font-semibold before:content-[''] before:w-1.5 before:h-1.5 before:bg-[#4ade80] before:rounded-full">En existencia</div>
+                            <button class="text-[12px] font-bold tracking-[1px] uppercase text-amarillo bg-amarillo/10 border border-amarillo/20 py-1.5 px-3.5 rounded-md hover:bg-amarillo/20 hover:border-amarillo/40" onclick="cotizar('Quaker Monogrado 60 API SL 1L')">Cotizar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col bg-gris-oscuro border border-white/5 rounded-2xl overflow-hidden transition-all duration-300 hover:border-amarillo/30 hover:-translate-y-1 group">
+                    <div class="h-[160px] flex items-center justify-center relative overflow-hidden bg-[linear-gradient(135deg,#1a1208_0%,#1a1a1a_100%)]">
+                        <img src="IMG/Aceite-Monogrado-SAE40-5lts.webp" alt="Aceite monogrado Quaker Monogrado 20w-50 API SN Garrafa 5L" class="relative z-10 w-32 h-32 object-contain">
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex items-start justify-between gap-2 mb-1.5">
+                            <div class="text-[16px] font-bold text-white leading-tight">Quaker Monogrado 40 API SL</div><span class="text-[11px] font-bold tracking-[1px] uppercase py-0.5 px-2 rounded-full border bg-amarillo/12 text-amarillo border-amarillo/25">Garrafa 5L</span>
+                        </div>
+                        <div class="text-[13px] text-white/45 leading-[1.6] mb-4 flex-1">Garrafa de aceite monogrado para protección básica.</div>
+                        <div class="flex items-center justify-between pt-3 border-t border-white/5">
+                            <div class="flex items-center gap-1.5 text-[12px] text-white/35 font-semibold before:content-[''] before:w-1.5 before:h-1.5 before:bg-[#4ade80] before:rounded-full">En existencia</div>
+                            <button class="text-[12px] font-bold tracking-[1px] uppercase text-amarillo bg-amarillo/10 border border-amarillo/20 py-1.5 px-3.5 rounded-md hover:bg-amarillo/20 hover:border-amarillo/40" onclick="cotizar('Quaker Monogrado 40 Garrafa 5L')">Cotizar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col bg-gris-oscuro border border-white/5 rounded-2xl overflow-hidden transition-all duration-300 hover:border-amarillo/30 hover:-translate-y-1 group">
+                    <div class="h-[160px] flex items-center justify-center relative overflow-hidden bg-[linear-gradient(135deg,#1a1208_0%,#1a1a1a_100%)]">
+                        <img src="IMG/Aceite-Monogrado-SAE60-5lts.webp" alt="Aceite monogrado Quaker Monogrado 60 API SL Garrafa 5L" class="relative z-10 w-32 h-32 object-contain">
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex items-start justify-between gap-2 mb-1.5">
+                            <div class="text-[16px] font-bold text-white leading-tight">Quaker Monogrado 60 API SL</div><span class="text-[11px] font-bold tracking-[1px] uppercase py-0.5 px-2 rounded-full border bg-amarillo/12 text-amarillo border-amarillo/25">Garrafa 5L</span>
+                        </div>
+                        <div class="text-[13px] text-white/45 leading-[1.6] mb-4 flex-1">Garrafa de aceite monogrado alto kilometraje.</div>
+                        <div class="flex items-center justify-between pt-3 border-t border-white/5">
+                            <div class="flex items-center gap-1.5 text-[12px] text-white/35 font-semibold before:content-[''] before:w-1.5 before:h-1.5 before:bg-[#4ade80] before:rounded-full">En existencia</div>
+                            <button class="text-[12px] font-bold tracking-[1px] uppercase text-amarillo bg-amarillo/10 border border-amarillo/20 py-1.5 px-3.5 rounded-md hover:bg-amarillo/20 hover:border-amarillo/40" onclick="cotizar('Quaker Monogrado 60 Garrafa 5L')">Cotizar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col bg-gris-oscuro border border-white/5 rounded-2xl overflow-hidden transition-all duration-300 hover:border-amarillo/30 hover:-translate-y-1 group">
+                    <div class="h-[160px] flex items-center justify-center relative overflow-hidden bg-[linear-gradient(135deg,#1a1208_0%,#1a1a1a_100%)]">
+                        <img src="IMG/Multigrado-20w50-1lt-quaker.webp" alt="Aceite Multigrado 20W-50 Quaker 1L" class="relative z-10 w-32 h-32 object-contain">
+
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex items-start justify-between gap-2 mb-1.5">
+                            <div class="text-[16px] font-bold text-white leading-tight">Quaker Multigrado 20w-50 API SN</div><span class="text-[11px] font-bold tracking-[1px] uppercase py-0.5 px-2 rounded-full border bg-amarillo/12 text-amarillo border-amarillo/25">1 Litro</span>
+                        </div>
+                        <div class="text-[13px] text-white/45 leading-[1.6] mb-4 flex-1">Aceite multigrado con tecnología avanzada de protección.</div>
+                        <div class="flex items-center justify-between pt-3 border-t border-white/5">
+                            <div class="flex items-center gap-1.5 text-[12px] text-white/35 font-semibold before:content-[''] before:w-1.5 before:h-1.5 before:bg-[#4ade80] before:rounded-full">En existencia</div>
+                            <button class="text-[12px] font-bold tracking-[1px] uppercase text-amarillo bg-amarillo/10 border border-amarillo/20 py-1.5 px-3.5 rounded-md hover:bg-amarillo/20 hover:border-amarillo/40" onclick="cotizar('Quaker Multigrado 20w50 1L')">Cotizar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col bg-gris-oscuro border border-white/5 rounded-2xl overflow-hidden transition-all duration-300 hover:border-amarillo/30 hover:-translate-y-1 group">
+                    <div class="h-[160px] flex items-center justify-center relative overflow-hidden bg-[linear-gradient(135deg,#1a1208_0%,#1a1a1a_100%)]">
+                        <img src="IMG/Aceite-Multigrado-25w50-1lt.webp" alt="Aceite Multigrado 25W-50 Quaker 1L" class="relative z-10 w-32 h-32 object-contain">
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex items-start justify-between gap-2 mb-1.5">
+                            <div class="text-[16px] font-bold text-white leading-tight">Quaker Multigrado 25w-50 API SN</div><span class="text-[11px] font-bold tracking-[1px] uppercase py-0.5 px-2 rounded-full border bg-amarillo/12 text-amarillo border-amarillo/25">1 Litro</span>
+                        </div>
+                        <div class="text-[13px] text-white/45 leading-[1.6] mb-4 flex-1">Aceite multigrado de alto rendimiento.</div>
+                        <div class="flex items-center justify-between pt-3 border-t border-white/5">
+                            <div class="flex items-center gap-1.5 text-[12px] text-white/35 font-semibold before:content-[''] before:w-1.5 before:h-1.5 before:bg-[#4ade80] before:rounded-full">En existencia</div>
+                            <button class="text-[12px] font-bold tracking-[1px] uppercase text-amarillo bg-amarillo/10 border border-amarillo/20 py-1.5 px-3.5 rounded-md hover:bg-amarillo/20 hover:border-amarillo/40" onclick="cotizar('Quaker Multigrado 25w50 1L')">Cotizar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col bg-gris-oscuro border border-white/5 rounded-2xl overflow-hidden transition-all duration-300 hover:border-amarillo/30 hover:-translate-y-1 group">
+                    <div class="h-[160px] flex items-center justify-center relative overflow-hidden bg-[linear-gradient(135deg,#1a1208_0%,#1a1a1a_100%)]">
+                        <img src="IMG/Aceite-Multigrado-20w50-5lts-quaker.webp" alt="Aceite Multigrado 20W-50 Quaker Garrafa 5L" class="relative z-10 w-32 h-32 object-contain">
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex items-start justify-between gap-2 mb-1.5">
+                            <div class="text-[16px] font-bold text-white leading-tight">Quaker Multigrado 20w-50 API SN</div><span class="text-[11px] font-bold tracking-[1px] uppercase py-0.5 px-2 rounded-full border bg-amarillo/12 text-amarillo border-amarillo/25">Garrafa 5L</span>
+                        </div>
+                        <div class="text-[13px] text-white/45 leading-[1.6] mb-4 flex-1">Garrafa aceite multigrado.</div>
+                        <div class="flex items-center justify-between pt-3 border-t border-white/5">
+                            <div class="flex items-center gap-1.5 text-[12px] text-white/35 font-semibold before:content-[''] before:w-1.5 before:h-1.5 before:bg-[#4ade80] before:rounded-full">En existencia</div>
+                            <button class="text-[12px] font-bold tracking-[1px] uppercase text-amarillo bg-amarillo/10 border border-amarillo/20 py-1.5 px-3.5 rounded-md hover:bg-amarillo/20 hover:border-amarillo/40" onclick="cotizar('Quaker Multigrado 20w50 Garrafa 5L')">Cotizar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col bg-gris-oscuro border border-white/5 rounded-2xl overflow-hidden transition-all duration-300 hover:border-amarillo/30 hover:-translate-y-1 group">
+                    <div class="h-[160px] flex items-center justify-center relative overflow-hidden bg-[linear-gradient(135deg,#1a1208_0%,#1a1a1a_100%)]">
+                        <img src="IMG/Aceite-Multigrado-25w50-5lts-Quaker.webp" alt="Aceite Multigrado 25W-50 Quaker Garrafa 5L" class="relative z-10 w-32 h-32 object-contain">
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex items-start justify-between gap-2 mb-1.5">
+                            <div class="text-[16px] font-bold text-white leading-tight">Quaker Multigrado 25w-50 API SN</div><span class="text-[11px] font-bold tracking-[1px] uppercase py-0.5 px-2 rounded-full border bg-amarillo/12 text-amarillo border-amarillo/25">Garrafa 5L</span>
+                        </div>
+                        <div class="text-[13px] text-white/45 leading-[1.6] mb-4 flex-1">Garrafa aceite multigrado sintético blend.</div>
+                        <div class="flex items-center justify-between pt-3 border-t border-white/5">
+                            <div class="flex items-center gap-1.5 text-[12px] text-white/35 font-semibold before:content-[''] before:w-1.5 before:h-1.5 before:bg-[#4ade80] before:rounded-full">En existencia</div>
+                            <button class="text-[12px] font-bold tracking-[1px] uppercase text-amarillo bg-amarillo/10 border border-amarillo/20 py-1.5 px-3.5 rounded-md hover:bg-amarillo/20 hover:border-amarillo/40" onclick="cotizar('Quaker Multigrado 25w50 Garrafa 5L')">Cotizar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col bg-gris-oscuro border border-white/5 rounded-2xl overflow-hidden transition-all duration-300 hover:border-amarillo/30 hover:-translate-y-1 group">
+                    <div class="h-[160px] flex items-center justify-center relative overflow-hidden bg-[linear-gradient(135deg,#1a1208_0%,#1a1a1a_100%)]">
+                        <img src="IMG/Monogrado-40-1lts-Roshfrans.webp" alt="Aceite Monogrado 40 API SL 1L Roshfrans" class="relative z-10 w-32 h-32 object-contain">
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex items-start justify-between gap-2 mb-1.5">
+                            <div class="text-[16px] font-bold text-white leading-tight">RoshFran Monogrado 40 API SL</div><span class="text-[11px] font-bold tracking-[1px] uppercase py-0.5 px-2 rounded-full border bg-amarillo/12 text-amarillo border-amarillo/25">1 Litro</span>
+                        </div>
+                        <div class="text-[13px] text-white/45 leading-[1.6] mb-4 flex-1">Aceite monogrado RoshFran clásico.</div>
+                        <div class="flex items-center justify-between pt-3 border-t border-white/5">
+                            <div class="flex items-center gap-1.5 text-[12px] text-white/35 font-semibold before:content-[''] before:w-1.5 before:h-1.5 before:bg-[#4ade80] before:rounded-full">En existencia</div>
+                            <button class="text-[12px] font-bold tracking-[1px] uppercase text-amarillo bg-amarillo/10 border border-amarillo/20 py-1.5 px-3.5 rounded-md hover:bg-amarillo/20 hover:border-amarillo/40" onclick="cotizar('RoshFran Monogrado 40 1L')">Cotizar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col bg-gris-oscuro border border-white/5 rounded-2xl overflow-hidden transition-all duration-300 hover:border-amarillo/30 hover:-translate-y-1 group">
+                    <div class="h-[160px] flex items-center justify-center relative overflow-hidden bg-[linear-gradient(135deg,#1a1208_0%,#1a1a1a_100%)]">
+                        <div class="absolute w-[120px] h-[120px] rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-15 bg-[#FACC15]"></div><div class="text-[72px] relative z-10 transition-transform duration-300 group-hover:scale-110">🛢️</div>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex items-start justify-between gap-2 mb-1.5">
+                            <div class="text-[16px] font-bold text-white leading-tight">RoshFran Monogrado 60 API SL</div><span class="text-[11px] font-bold tracking-[1px] uppercase py-0.5 px-2 rounded-full border bg-amarillo/12 text-amarillo border-amarillo/25">1 Litro</span>
+                        </div>
+                        <div class="text-[13px] text-white/45 leading-[1.6] mb-4 flex-1">Aceite monogrado para motor desgastado.</div>
+                        <div class="flex items-center justify-between pt-3 border-t border-white/5">
+                            <div class="flex items-center gap-1.5 text-[12px] text-white/35 font-semibold before:content-[''] before:w-1.5 before:h-1.5 before:bg-[#4ade80] before:rounded-full">En existencia</div>
+                            <button class="text-[12px] font-bold tracking-[1px] uppercase text-amarillo bg-amarillo/10 border border-amarillo/20 py-1.5 px-3.5 rounded-md hover:bg-amarillo/20 hover:border-amarillo/40" onclick="cotizar('RoshFran Monogrado 60 1L')">Cotizar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col bg-gris-oscuro border border-white/5 rounded-2xl overflow-hidden transition-all duration-300 hover:border-amarillo/30 hover:-translate-y-1 group">
+                    <div class="h-[160px] flex items-center justify-center relative overflow-hidden bg-[linear-gradient(135deg,#1a1208_0%,#1a1a1a_100%)]">
+                        <div class="absolute w-[120px] h-[120px] rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-15 bg-[#FACC15]"></div><div class="text-[72px] relative z-10 transition-transform duration-300 group-hover:scale-110">🛢️</div>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex items-start justify-between gap-2 mb-1.5">
+                            <div class="text-[16px] font-bold text-white leading-tight">RoshFran Multigrado 20w-50 API SN</div><span class="text-[11px] font-bold tracking-[1px] uppercase py-0.5 px-2 rounded-full border bg-amarillo/12 text-amarillo border-amarillo/25">1 Litro</span>
+                        </div>
+                        <div class="text-[13px] text-white/45 leading-[1.6] mb-4 flex-1">Multigrado protección total de RoshFran.</div>
+                        <div class="flex items-center justify-between pt-3 border-t border-white/5">
+                            <div class="flex items-center gap-1.5 text-[12px] text-white/35 font-semibold before:content-[''] before:w-1.5 before:h-1.5 before:bg-[#4ade80] before:rounded-full">En existencia</div>
+                            <button class="text-[12px] font-bold tracking-[1px] uppercase text-amarillo bg-amarillo/10 border border-amarillo/20 py-1.5 px-3.5 rounded-md hover:bg-amarillo/20 hover:border-amarillo/40" onclick="cotizar('RoshFran Multigrado 20w50 1L')">Cotizar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col bg-gris-oscuro border border-white/5 rounded-2xl overflow-hidden transition-all duration-300 hover:border-amarillo/30 hover:-translate-y-1 group">
+                    <div class="h-[160px] flex items-center justify-center relative overflow-hidden bg-[linear-gradient(135deg,#1a1208_0%,#1a1a1a_100%)]">
+                        <div class="absolute w-[120px] h-[120px] rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-15 bg-[#FACC15]"></div><div class="text-[72px] relative z-10 transition-transform duration-300 group-hover:scale-110">🛢️</div>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex items-start justify-between gap-2 mb-1.5">
+                            <div class="text-[16px] font-bold text-white leading-tight">Mobil Monogrado 40 API SN</div><span class="text-[11px] font-bold tracking-[1px] uppercase py-0.5 px-2 rounded-full border bg-amarillo/12 text-amarillo border-amarillo/25">1 Litro</span>
+                        </div>
+                        <div class="text-[13px] text-white/45 leading-[1.6] mb-4 flex-1">Aceite de alta resistencia térmica.</div>
+                        <div class="flex items-center justify-between pt-3 border-t border-white/5">
+                            <div class="flex items-center gap-1.5 text-[12px] text-white/35 font-semibold before:content-[''] before:w-1.5 before:h-1.5 before:bg-[#4ade80] before:rounded-full">En existencia</div>
+                            <button class="text-[12px] font-bold tracking-[1px] uppercase text-amarillo bg-amarillo/10 border border-amarillo/20 py-1.5 px-3.5 rounded-md hover:bg-amarillo/20 hover:border-amarillo/40" onclick="cotizar('Mobil Monogrado 40 1L')">Cotizar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col bg-gris-oscuro border border-white/5 rounded-2xl overflow-hidden transition-all duration-300 hover:border-amarillo/30 hover:-translate-y-1 group">
+                    <div class="h-[160px] flex items-center justify-center relative overflow-hidden bg-[linear-gradient(135deg,#1a1208_0%,#1a1a1a_100%)]">
+                        <div class="absolute w-[120px] h-[120px] rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-15 bg-[#FACC15]"></div><div class="text-[72px] relative z-10 transition-transform duration-300 group-hover:scale-110">🛢️</div>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex items-start justify-between gap-2 mb-1.5">
+                            <div class="text-[16px] font-bold text-white leading-tight">Mobil Monogrado 50 API SN</div><span class="text-[11px] font-bold tracking-[1px] uppercase py-0.5 px-2 rounded-full border bg-amarillo/12 text-amarillo border-amarillo/25">1 Litro</span>
+                        </div>
+                        <div class="text-[13px] text-white/45 leading-[1.6] mb-4 flex-1">Protección Mobil para trabajos pesados.</div>
+                        <div class="flex items-center justify-between pt-3 border-t border-white/5">
+                            <div class="flex items-center gap-1.5 text-[12px] text-white/35 font-semibold before:content-[''] before:w-1.5 before:h-1.5 before:bg-[#4ade80] before:rounded-full">En existencia</div>
+                            <button class="text-[12px] font-bold tracking-[1px] uppercase text-amarillo bg-amarillo/10 border border-amarillo/20 py-1.5 px-3.5 rounded-md hover:bg-amarillo/20 hover:border-amarillo/40" onclick="cotizar('Mobil Monogrado 50 1L')">Cotizar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col bg-gris-oscuro border border-white/5 rounded-2xl overflow-hidden transition-all duration-300 hover:border-amarillo/30 hover:-translate-y-1 group">
+                    <div class="h-[160px] flex items-center justify-center relative overflow-hidden bg-[linear-gradient(135deg,#1a1208_0%,#1a1a1a_100%)]">
+                        <div class="absolute w-[120px] h-[120px] rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-15 bg-[#FACC15]"></div><div class="text-[72px] relative z-10 transition-transform duration-300 group-hover:scale-110">🛢️</div>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex items-start justify-between gap-2 mb-1.5">
+                            <div class="text-[16px] font-bold text-white leading-tight">Mobil Multigrado 20w-50 API SN</div><span class="text-[11px] font-bold tracking-[1px] uppercase py-0.5 px-2 rounded-full border bg-amarillo/12 text-amarillo border-amarillo/25">1 Litro</span>
+                        </div>
+                        <div class="text-[13px] text-white/45 leading-[1.6] mb-4 flex-1">Aceite Mobil Super para el día a día.</div>
+                        <div class="flex items-center justify-between pt-3 border-t border-white/5">
+                            <div class="flex items-center gap-1.5 text-[12px] text-white/35 font-semibold before:content-[''] before:w-1.5 before:h-1.5 before:bg-[#4ade80] before:rounded-full">En existencia</div>
+                            <button class="text-[12px] font-bold tracking-[1px] uppercase text-amarillo bg-amarillo/10 border border-amarillo/20 py-1.5 px-3.5 rounded-md hover:bg-amarillo/20 hover:border-amarillo/40" onclick="cotizar('Mobil Multigrado 20w50 1L')">Cotizar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col bg-gris-oscuro border border-white/5 rounded-2xl overflow-hidden transition-all duration-300 hover:border-amarillo/30 hover:-translate-y-1 group">
+                    <div class="h-[160px] flex items-center justify-center relative overflow-hidden bg-[linear-gradient(135deg,#1a1208_0%,#1a1a1a_100%)]">
+                        <div class="absolute w-[120px] h-[120px] rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-15 bg-[#FACC15]"></div><div class="text-[72px] relative z-10 transition-transform duration-300 group-hover:scale-110">🛢️</div>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex items-start justify-between gap-2 mb-1.5">
+                            <div class="text-[16px] font-bold text-white leading-tight">Mobil Sintético 25w-60 API SN</div><span class="text-[11px] font-bold tracking-[1px] uppercase py-0.5 px-2 rounded-full border bg-amarillo/12 text-amarillo border-amarillo/25">1 Litro</span>
+                        </div>
+                        <div class="text-[13px] text-white/45 leading-[1.6] mb-4 flex-1">Aceite sintético para motores con desgaste y altas exigencias.</div>
+                        <div class="flex items-center justify-between pt-3 border-t border-white/5">
+                            <div class="flex items-center gap-1.5 text-[12px] text-white/35 font-semibold before:content-[''] before:w-1.5 before:h-1.5 before:bg-[#4ade80] before:rounded-full">En existencia</div>
+                            <button class="text-[12px] font-bold tracking-[1px] uppercase text-amarillo bg-amarillo/10 border border-amarillo/20 py-1.5 px-3.5 rounded-md hover:bg-amarillo/20 hover:border-amarillo/40" onclick="cotizar('Mobil Sintetico 25w60 1L')">Cotizar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col bg-gris-oscuro border border-white/5 rounded-2xl overflow-hidden transition-all duration-300 hover:border-amarillo/30 hover:-translate-y-1 group">
+                    <div class="h-[160px] flex items-center justify-center relative overflow-hidden bg-[linear-gradient(135deg,#1a1208_0%,#1a1a1a_100%)]">
+                        <div class="absolute w-[120px] h-[120px] rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-15 bg-[#FACC15]"></div><div class="text-[72px] relative z-10 transition-transform duration-300 group-hover:scale-110">🛢️</div>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex items-start justify-between gap-2 mb-1.5">
+                            <div class="text-[16px] font-bold text-white leading-tight">Mobil Multigrado 5w-30</div><span class="text-[11px] font-bold tracking-[1px] uppercase py-0.5 px-2 rounded-full border bg-amarillo/12 text-amarillo border-amarillo/25">1 Litro</span>
+                        </div>
+                        <div class="text-[13px] text-white/45 leading-[1.6] mb-4 flex-1">Aceite de baja viscosidad para economía de combustible.</div>
+                        <div class="flex items-center justify-between pt-3 border-t border-white/5">
+                            <div class="flex items-center gap-1.5 text-[12px] text-white/35 font-semibold before:content-[''] before:w-1.5 before:h-1.5 before:bg-[#4ade80] before:rounded-full">En existencia</div>
+                            <button class="text-[12px] font-bold tracking-[1px] uppercase text-amarillo bg-amarillo/10 border border-amarillo/20 py-1.5 px-3.5 rounded-md hover:bg-amarillo/20 hover:border-amarillo/40" onclick="cotizar('Mobil Multigrado 5w30 1L')">Cotizar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col bg-gris-oscuro border border-white/5 rounded-2xl overflow-hidden transition-all duration-300 hover:border-amarillo/30 hover:-translate-y-1 group">
+                    <div class="h-[160px] flex items-center justify-center relative overflow-hidden bg-[linear-gradient(135deg,#1a1208_0%,#1a1a1a_100%)]">
+                        <div class="absolute w-[120px] h-[120px] rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-15 bg-[#FACC15]"></div><div class="text-[72px] relative z-10 transition-transform duration-300 group-hover:scale-110">🛢️</div>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex items-start justify-between gap-2 mb-1.5">
+                            <div class="text-[16px] font-bold text-white leading-tight">Mobil Sintético 5w-30</div><span class="text-[11px] font-bold tracking-[1px] uppercase py-0.5 px-2 rounded-full border bg-amarillo/12 text-amarillo border-amarillo/25">Garrafa 5L</span>
+                        </div>
+                        <div class="text-[13px] text-white/45 leading-[1.6] mb-4 flex-1">Mobil 1 Sintético avanzado. Garrafa de 5 litros.</div>
+                        <div class="flex items-center justify-between pt-3 border-t border-white/5">
+                            <div class="flex items-center gap-1.5 text-[12px] text-white/35 font-semibold before:content-[''] before:w-1.5 before:h-1.5 before:bg-[#4ade80] before:rounded-full">En existencia</div>
+                            <button class="text-[12px] font-bold tracking-[1px] uppercase text-amarillo bg-amarillo/10 border border-amarillo/20 py-1.5 px-3.5 rounded-md hover:bg-amarillo/20 hover:border-amarillo/40" onclick="cotizar('Mobil Sintetico 5w30 Garrafa 5L')">Cotizar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col bg-gris-oscuro border border-white/5 rounded-2xl overflow-hidden transition-all duration-300 hover:border-amarillo/30 hover:-translate-y-1 group">
+                    <div class="h-[160px] flex items-center justify-center relative overflow-hidden bg-[linear-gradient(135deg,#1a1208_0%,#1a1a1a_100%)]">
+                        <div class="absolute w-[120px] h-[120px] rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-15 bg-[#FACC15]"></div><div class="text-[72px] relative z-10 transition-transform duration-300 group-hover:scale-110">🛢️</div>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex items-start justify-between gap-2 mb-1.5">
+                            <div class="text-[16px] font-bold text-white leading-tight">Castrol Multigrado 20w-50 API SN</div><span class="text-[11px] font-bold tracking-[1px] uppercase py-0.5 px-2 rounded-full border bg-amarillo/12 text-amarillo border-amarillo/25">1 Litro</span>
+                        </div>
+                        <div class="text-[13px] text-white/45 leading-[1.6] mb-4 flex-1">Aceite Castrol GTX Anti-sedimentos.</div>
+                        <div class="flex items-center justify-between pt-3 border-t border-white/5">
+                            <div class="flex items-center gap-1.5 text-[12px] text-white/35 font-semibold before:content-[''] before:w-1.5 before:h-1.5 before:bg-[#4ade80] before:rounded-full">En existencia</div>
+                            <button class="text-[12px] font-bold tracking-[1px] uppercase text-amarillo bg-amarillo/10 border border-amarillo/20 py-1.5 px-3.5 rounded-md hover:bg-amarillo/20 hover:border-amarillo/40" onclick="cotizar('Castrol Multigrado 20w50 1L')">Cotizar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col bg-gris-oscuro border border-white/5 rounded-2xl overflow-hidden transition-all duration-300 hover:border-amarillo/30 hover:-translate-y-1 group">
+                    <div class="h-[160px] flex items-center justify-center relative overflow-hidden bg-[linear-gradient(135deg,#1a1208_0%,#1a1a1a_100%)]">
+                        <div class="absolute w-[120px] h-[120px] rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-15 bg-[#FACC15]"></div><div class="text-[72px] relative z-10 transition-transform duration-300 group-hover:scale-110">⚙️</div>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex items-start justify-between gap-2 mb-1.5">
+                            <div class="text-[16px] font-bold text-white leading-tight">Bardhal Aceite STD 250</div><span class="text-[11px] font-bold tracking-[1px] uppercase py-0.5 px-2 rounded-full border bg-amarillo/12 text-amarillo border-amarillo/25">1 Litro</span>
+                        </div>
+                        <div class="text-[13px] text-white/45 leading-[1.6] mb-4 flex-1">Aceite para transmisión estándar automotriz.</div>
+                        <div class="flex items-center justify-between pt-3 border-t border-white/5">
+                            <div class="flex items-center gap-1.5 text-[12px] text-white/35 font-semibold before:content-[''] before:w-1.5 before:h-1.5 before:bg-[#4ade80] before:rounded-full">En existencia</div>
+                            <button class="text-[12px] font-bold tracking-[1px] uppercase text-amarillo bg-amarillo/10 border border-amarillo/20 py-1.5 px-3.5 rounded-md hover:bg-amarillo/20 hover:border-amarillo/40" onclick="cotizar('Bardhal Aceite STD 250 1L')">Cotizar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col bg-gris-oscuro border border-white/5 rounded-2xl overflow-hidden transition-all duration-300 hover:border-amarillo/30 hover:-translate-y-1 group">
+                    <div class="h-[160px] flex items-center justify-center relative overflow-hidden bg-[linear-gradient(135deg,#1a1208_0%,#1a1a1a_100%)]">
+                        <div class="absolute w-[120px] h-[120px] rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-15 bg-[#FACC15]"></div><div class="text-[72px] relative z-10 transition-transform duration-300 group-hover:scale-110">⚙️</div>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex items-start justify-between gap-2 mb-1.5">
+                            <div class="text-[16px] font-bold text-white leading-tight">Bardhal 80w-90</div><span class="text-[11px] font-bold tracking-[1px] uppercase py-0.5 px-2 rounded-full border bg-amarillo/12 text-amarillo border-amarillo/25">1 Litro</span>
+                        </div>
+                        <div class="text-[13px] text-white/45 leading-[1.6] mb-4 flex-1">Lubricante para engranajes automotrices y diferenciales.</div>
+                        <div class="flex items-center justify-between pt-3 border-t border-white/5">
+                            <div class="flex items-center gap-1.5 text-[12px] text-white/35 font-semibold before:content-[''] before:w-1.5 before:h-1.5 before:bg-[#4ade80] before:rounded-full">En existencia</div>
+                            <button class="text-[12px] font-bold tracking-[1px] uppercase text-amarillo bg-amarillo/10 border border-amarillo/20 py-1.5 px-3.5 rounded-md hover:bg-amarillo/20 hover:border-amarillo/40" onclick="cotizar('Bardhal 80w90 1L')">Cotizar</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="grupo-categoria reveal mb-16" id="grupo-filtros" data-grupo="filtros">
+            <div class="flex items-center gap-4 mb-6">
+                <div class="w-11 h-11 bg-[#4ade80]/10 border border-[#4ade80]/25 rounded-lg flex items-center justify-center text-[20px]">🔩</div>
+                <div class="font-bebas text-[28px] tracking-[2px] text-white">Filtros</div>
+                <div class="flex-1 h-px bg-white/5"></div>
+                <div class="text-[12px] text-white/30 font-semibold tracking-[1px]">3 productos</div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="flex flex-col md:flex-row md:col-span-2 bg-gris-oscuro border border-white/5 rounded-2xl overflow-hidden transition-all duration-300 cursor-default hover:border-amarillo/30 hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,0.4),0_0_0_1px_rgba(250,204,21,0.1)] group">
+                    <div class="h-[160px] md:h-auto md:w-[240px] shrink-0 flex items-center justify-center relative overflow-hidden bg-[linear-gradient(135deg,#0d1a12_0%,#1a1a1a_100%)]">
+                        <div class="absolute w-[120px] h-[120px] rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-15 bg-[#4ade80]"></div>
+                        <div class="text-[72px] md:text-[90px] relative z-10 transition-transform duration-300 drop-shadow-[0_8px_16px_rgba(0,0,0,0.5)] group-hover:scale-110 group-hover:-translate-y-1">🌬️</div>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex items-start justify-between gap-2 mb-1.5">
+                            <div class="text-[16px] font-bold text-white leading-tight">Filtro de aire de alto flujo</div>
+                            <span class="text-[11px] font-bold tracking-[1px] uppercase py-0.5 px-2 rounded-full border whitespace-nowrap shrink-0 bg-[#4ade80]/10 text-[#4ade80] border-[#4ade80]/20">Rendimiento</span>
+                        </div>
+                        <div class="text-[13px] text-white/45 leading-[1.6] mb-4 flex-1">Maximiza el flujo de aire al motor para mejor combustión y eficiencia. Disponible para las marcas más comunes del mercado mexicano.</div>
+                        <div class="flex items-center justify-between pt-3 border-t border-white/5">
+                            <div class="flex items-center gap-1.5 text-[12px] text-white/35 font-semibold before:content-[''] before:w-1.5 before:h-1.5 before:bg-[#4ade80] before:rounded-full">En existencia</div>
+                            <button class="text-[12px] font-bold tracking-[1px] uppercase text-amarillo bg-amarillo/10 border border-amarillo/20 py-1.5 px-3.5 rounded-md transition-all duration-200 cursor-pointer font-barlow hover:bg-amarillo/20 hover:border-amarillo/40" onclick="cotizar('Filtro de aire de alto flujo')">Cotizar</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-col bg-gris-oscuro border border-white/5 rounded-2xl overflow-hidden transition-all duration-300 cursor-default hover:border-amarillo/30 hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,0.4),0_0_0_1px_rgba(250,204,21,0.1)] group">
+                    <div class="h-[160px] flex items-center justify-center relative overflow-hidden bg-[linear-gradient(135deg,#0d1a12_0%,#1a1a1a_100%)]">
+                        <div class="absolute w-[120px] h-[120px] rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-15 bg-[#4ade80]"></div>
+                        <div class="text-[72px] relative z-10 transition-transform duration-300 drop-shadow-[0_8px_16px_rgba(0,0,0,0.5)] group-hover:scale-110 group-hover:-translate-y-1">🔩</div>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex items-start justify-between gap-2 mb-1.5">
+                            <div class="text-[16px] font-bold text-white leading-tight">Filtro de aceite</div>
+                            <span class="text-[11px] font-bold tracking-[1px] uppercase py-0.5 px-2 rounded-full border whitespace-nowrap shrink-0 bg-[#4ade80]/10 text-[#4ade80] border-[#4ade80]/20">Esencial</span>
+                        </div>
+                        <div class="text-[13px] text-white/45 leading-[1.6] mb-4 flex-1">Retiene impurezas y prolonga la vida del motor. Compatible con la mayoría de vehículos.</div>
+                        <div class="flex items-center justify-between pt-3 border-t border-white/5">
+                            <div class="flex items-center gap-1.5 text-[12px] text-white/35 font-semibold before:content-[''] before:w-1.5 before:h-1.5 before:bg-[#4ade80] before:rounded-full">En existencia</div>
+                            <button class="text-[12px] font-bold tracking-[1px] uppercase text-amarillo bg-amarillo/10 border border-amarillo/20 py-1.5 px-3.5 rounded-md transition-all duration-200 cursor-pointer font-barlow hover:bg-amarillo/20 hover:border-amarillo/40" onclick="cotizar('Filtro de aceite')">Cotizar</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-col bg-gris-oscuro border border-white/5 rounded-2xl overflow-hidden transition-all duration-300 cursor-default hover:border-amarillo/30 hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,0.4),0_0_0_1px_rgba(250,204,21,0.1)] group">
+                    <div class="h-[160px] flex items-center justify-center relative overflow-hidden bg-[linear-gradient(135deg,#0d1a12_0%,#1a1a1a_100%)]">
+                        <div class="absolute w-[120px] h-[120px] rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-15 bg-[#4ade80]"></div>
+                        <div class="text-[72px] relative z-10 transition-transform duration-300 drop-shadow-[0_8px_16px_rgba(0,0,0,0.5)] group-hover:scale-110 group-hover:-translate-y-1">⛽</div>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex items-start justify-between gap-2 mb-1.5">
+                            <div class="text-[16px] font-bold text-white leading-tight">Filtro de combustible</div>
+                            <span class="text-[11px] font-bold tracking-[1px] uppercase py-0.5 px-2 rounded-full border whitespace-nowrap shrink-0 bg-[#4ade80]/10 text-[#4ade80] border-[#4ade80]/20">Protección</span>
+                        </div>
+                        <div class="text-[13px] text-white/45 leading-[1.6] mb-4 flex-1">Protege los inyectores y el carburador de partículas y sedimentos del combustible.</div>
+                        <div class="flex items-center justify-between pt-3 border-t border-white/5">
+                            <div class="flex items-center gap-1.5 text-[12px] text-white/35 font-semibold before:content-[''] before:w-1.5 before:h-1.5 before:bg-[#4ade80] before:rounded-full">En existencia</div>
+                            <button class="text-[12px] font-bold tracking-[1px] uppercase text-amarillo bg-amarillo/10 border border-amarillo/20 py-1.5 px-3.5 rounded-md transition-all duration-200 cursor-pointer font-barlow hover:bg-amarillo/20 hover:border-amarillo/40" onclick="cotizar('Filtro de combustible')">Cotizar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grupo-categoria reveal mb-16" id="grupo-accesorios" data-grupo="accesorios">
+            <div class="flex items-center gap-4 mb-6">
+                <div class="w-11 h-11 bg-[#60a5fa]/10 border border-[#60a5fa]/25 rounded-lg flex items-center justify-center text-[20px]">🔋</div>
+                <div class="font-bebas text-[28px] tracking-[2px] text-white">Accesorios y Químicos</div>
+                <div class="flex-1 h-px bg-white/5"></div>
+                <div class="text-[12px] text-white/30 font-semibold tracking-[1px]">11 productos</div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                
+                <div class="flex flex-col md:flex-row md:col-span-2 bg-gris-oscuro border border-white/5 rounded-2xl overflow-hidden transition-all duration-300 cursor-default hover:border-amarillo/30 hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,0.4),0_0_0_1px_rgba(250,204,21,0.1)] group">
+                    <div class="h-[160px] md:h-auto md:w-[240px] shrink-0 flex items-center justify-center relative overflow-hidden bg-[linear-gradient(135deg,#0d1020_0%,#1a1a1a_100%)]">
+                        <div class="absolute w-[120px] h-[120px] rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-15 bg-[#60a5fa]"></div>
+                        <div class="text-[72px] md:text-[90px] relative z-10 transition-transform duration-300 drop-shadow-[0_8px_16px_rgba(0,0,0,0.5)] group-hover:scale-110 group-hover:-translate-y-1">🔋</div>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex items-start justify-between gap-2 mb-1.5">
+                            <div class="text-[16px] font-bold text-white leading-tight">Baterías automotrices</div>
+                            <span class="text-[11px] font-bold tracking-[1px] uppercase py-0.5 px-2 rounded-full border whitespace-nowrap shrink-0 bg-[#60a5fa]/10 text-[#60a5fa] border-[#60a5fa]/20">Más vendido</span>
+                        </div>
+                        <div class="text-[13px] text-white/45 leading-[1.6] mb-4 flex-1">Baterías de 40 a 80 Ah para vehículos de pasajeros, camionetas y pickups. Marcas: Bosch, Varta, AC Delco.</div>
+                        <div class="flex items-center justify-between pt-3 border-t border-white/5">
+                            <div class="flex items-center gap-1.5 text-[12px] text-white/35 font-semibold before:content-[''] before:w-1.5 before:h-1.5 before:bg-[#4ade80] before:rounded-full">En existencia</div>
+                            <button class="text-[12px] font-bold tracking-[1px] uppercase text-amarillo bg-amarillo/10 border border-amarillo/20 py-1.5 px-3.5 rounded-md hover:bg-amarillo/20 hover:border-amarillo/40" onclick="cotizar('Batería automotriz')">Cotizar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col bg-gris-oscuro border border-white/5 rounded-2xl overflow-hidden transition-all duration-300 hover:border-amarillo/30 hover:-translate-y-1 group">
+                    <div class="h-[160px] flex items-center justify-center relative overflow-hidden bg-[linear-gradient(135deg,#0d1020_0%,#1a1a1a_100%)]">
+                        <div class="absolute w-[120px] h-[120px] rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-15 bg-[#60a5fa]"></div><div class="text-[72px] relative z-10 transition-transform duration-300 group-hover:scale-110">💡</div>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex items-start justify-between gap-2 mb-1.5">
+                            <div class="text-[16px] font-bold text-white leading-tight">Focos y luces LED</div><span class="text-[11px] font-bold tracking-[1px] uppercase py-0.5 px-2 rounded-full border bg-[#60a5fa]/10 text-[#60a5fa] border-[#60a5fa]/20">Varios</span>
+                        </div>
+                        <div class="text-[13px] text-white/45 leading-[1.6] mb-4 flex-1">Focos H4, H7, H11 y LED de conversión.</div>
+                        <div class="flex items-center justify-between pt-3 border-t border-white/5">
+                            <div class="flex items-center gap-1.5 text-[12px] text-white/35 font-semibold before:content-[''] before:w-1.5 before:h-1.5 before:bg-[#4ade80] before:rounded-full">En existencia</div>
+                            <button class="text-[12px] font-bold tracking-[1px] uppercase text-amarillo bg-amarillo/10 border border-amarillo/20 py-1.5 px-3.5 rounded-md hover:bg-amarillo/20 hover:border-amarillo/40" onclick="cotizar('Focos y luces LED')">Cotizar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col bg-gris-oscuro border border-white/5 rounded-2xl overflow-hidden transition-all duration-300 hover:border-amarillo/30 hover:-translate-y-1 group">
+                    <div class="h-[160px] flex items-center justify-center relative overflow-hidden bg-[linear-gradient(135deg,#0d1020_0%,#1a1a1a_100%)]">
+                        <div class="absolute w-[120px] h-[120px] rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-15 bg-[#60a5fa]"></div><div class="text-[72px] relative z-10 transition-transform duration-300 group-hover:scale-110">🌧️</div>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex items-start justify-between gap-2 mb-1.5">
+                            <div class="text-[16px] font-bold text-white leading-tight">Limpiaparabrisas</div><span class="text-[11px] font-bold tracking-[1px] uppercase py-0.5 px-2 rounded-full border bg-[#60a5fa]/10 text-[#60a5fa] border-[#60a5fa]/20">Seguridad</span>
+                        </div>
+                        <div class="text-[13px] text-white/45 leading-[1.6] mb-4 flex-1">Plumas convencionales y de silicona.</div>
+                        <div class="flex items-center justify-between pt-3 border-t border-white/5">
+                            <div class="flex items-center gap-1.5 text-[12px] text-white/35 font-semibold before:content-[''] before:w-1.5 before:h-1.5 before:bg-[#4ade80] before:rounded-full">En existencia</div>
+                            <button class="text-[12px] font-bold tracking-[1px] uppercase text-amarillo bg-amarillo/10 border border-amarillo/20 py-1.5 px-3.5 rounded-md hover:bg-amarillo/20 hover:border-amarillo/40" onclick="cotizar('Limpiaparabrisas')">Cotizar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col bg-gris-oscuro border border-white/5 rounded-2xl overflow-hidden transition-all duration-300 hover:border-amarillo/30 hover:-translate-y-1 group">
+                    <div class="h-[160px] flex items-center justify-center relative overflow-hidden bg-[linear-gradient(135deg,#0d1020_0%,#1a1a1a_100%)]">
+                        <div class="absolute w-[120px] h-[120px] rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-15 bg-[#60a5fa]"></div><div class="text-[72px] relative z-10 transition-transform duration-300 group-hover:scale-110">🧪</div>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex items-start justify-between gap-2 mb-1.5">
+                            <div class="text-[16px] font-bold text-white leading-tight">Líquido de frenos Bardhal DOT 3/4</div><span class="text-[11px] font-bold tracking-[1px] uppercase py-0.5 px-2 rounded-full border bg-[#60a5fa]/10 text-[#60a5fa] border-[#60a5fa]/20">350ml</span>
+                        </div>
+                        <div class="text-[13px] text-white/45 leading-[1.6] mb-4 flex-1">Fluido para frenos hidráulicos en formato de 350ml.</div>
+                        <div class="flex items-center justify-between pt-3 border-t border-white/5">
+                            <div class="flex items-center gap-1.5 text-[12px] text-white/35 font-semibold before:content-[''] before:w-1.5 before:h-1.5 before:bg-[#4ade80] before:rounded-full">En existencia</div>
+                            <button class="text-[12px] font-bold tracking-[1px] uppercase text-amarillo bg-amarillo/10 border border-amarillo/20 py-1.5 px-3.5 rounded-md hover:bg-amarillo/20 hover:border-amarillo/40" onclick="cotizar('Líquido de frenos Bardhal 350ml')">Cotizar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col bg-gris-oscuro border border-white/5 rounded-2xl overflow-hidden transition-all duration-300 hover:border-amarillo/30 hover:-translate-y-1 group">
+                    <div class="h-[160px] flex items-center justify-center relative overflow-hidden bg-[linear-gradient(135deg,#0d1020_0%,#1a1a1a_100%)]">
+                        <div class="absolute w-[120px] h-[120px] rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-15 bg-[#60a5fa]"></div><div class="text-[72px] relative z-10 transition-transform duration-300 group-hover:scale-110">🧪</div>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex items-start justify-between gap-2 mb-1.5">
+                            <div class="text-[16px] font-bold text-white leading-tight">Líquido de frenos Bardhal DOT 3/4</div><span class="text-[11px] font-bold tracking-[1px] uppercase py-0.5 px-2 rounded-full border bg-[#60a5fa]/10 text-[#60a5fa] border-[#60a5fa]/20">1 Litro</span>
+                        </div>
+                        <div class="text-[13px] text-white/45 leading-[1.6] mb-4 flex-1">Fluido para frenos hidráulicos en presentación de 1 litro.</div>
+                        <div class="flex items-center justify-between pt-3 border-t border-white/5">
+                            <div class="flex items-center gap-1.5 text-[12px] text-white/35 font-semibold before:content-[''] before:w-1.5 before:h-1.5 before:bg-[#4ade80] before:rounded-full">En existencia</div>
+                            <button class="text-[12px] font-bold tracking-[1px] uppercase text-amarillo bg-amarillo/10 border border-amarillo/20 py-1.5 px-3.5 rounded-md hover:bg-amarillo/20 hover:border-amarillo/40" onclick="cotizar('Líquido de frenos Bardhal 1L')">Cotizar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col bg-gris-oscuro border border-white/5 rounded-2xl overflow-hidden transition-all duration-300 hover:border-amarillo/30 hover:-translate-y-1 group">
+                    <div class="h-[160px] flex items-center justify-center relative overflow-hidden bg-[linear-gradient(135deg,#0d1020_0%,#1a1a1a_100%)]">
+                        <div class="absolute w-[120px] h-[120px] rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-15 bg-[#60a5fa]"></div><div class="text-[72px] relative z-10 transition-transform duration-300 group-hover:scale-110">⚙️</div>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex items-start justify-between gap-2 mb-1.5">
+                            <div class="text-[16px] font-bold text-white leading-tight">Líquido de Dir. Hidráulica Bardhal</div><span class="text-[11px] font-bold tracking-[1px] uppercase py-0.5 px-2 rounded-full border bg-[#60a5fa]/10 text-[#60a5fa] border-[#60a5fa]/20">350ml</span>
+                        </div>
+                        <div class="text-[13px] text-white/45 leading-[1.6] mb-4 flex-1">Fluido para sistemas de dirección hidráulica.</div>
+                        <div class="flex items-center justify-between pt-3 border-t border-white/5">
+                            <div class="flex items-center gap-1.5 text-[12px] text-white/35 font-semibold before:content-[''] before:w-1.5 before:h-1.5 before:bg-[#4ade80] before:rounded-full">En existencia</div>
+                            <button class="text-[12px] font-bold tracking-[1px] uppercase text-amarillo bg-amarillo/10 border border-amarillo/20 py-1.5 px-3.5 rounded-md hover:bg-amarillo/20 hover:border-amarillo/40" onclick="cotizar('Líquido Dir Hidráulica Bardhal 350ml')">Cotizar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col bg-gris-oscuro border border-white/5 rounded-2xl overflow-hidden transition-all duration-300 hover:border-amarillo/30 hover:-translate-y-1 group">
+                    <div class="h-[160px] flex items-center justify-center relative overflow-hidden bg-[linear-gradient(135deg,#0d1020_0%,#1a1a1a_100%)]">
+                        <div class="absolute w-[120px] h-[120px] rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-15 bg-[#60a5fa]"></div><div class="text-[72px] relative z-10 transition-transform duration-300 group-hover:scale-110">⚙️</div>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex items-start justify-between gap-2 mb-1.5">
+                            <div class="text-[16px] font-bold text-white leading-tight">Líquido de Dir. Hidráulica Bardhal</div><span class="text-[11px] font-bold tracking-[1px] uppercase py-0.5 px-2 rounded-full border bg-[#60a5fa]/10 text-[#60a5fa] border-[#60a5fa]/20">1 Litro</span>
+                        </div>
+                        <div class="text-[13px] text-white/45 leading-[1.6] mb-4 flex-1">Presentación de 1 litro para servicio completo.</div>
+                        <div class="flex items-center justify-between pt-3 border-t border-white/5">
+                            <div class="flex items-center gap-1.5 text-[12px] text-white/35 font-semibold before:content-[''] before:w-1.5 before:h-1.5 before:bg-[#4ade80] before:rounded-full">En existencia</div>
+                            <button class="text-[12px] font-bold tracking-[1px] uppercase text-amarillo bg-amarillo/10 border border-amarillo/20 py-1.5 px-3.5 rounded-md hover:bg-amarillo/20 hover:border-amarillo/40" onclick="cotizar('Líquido Dir Hidráulica Bardhal 1L')">Cotizar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col bg-gris-oscuro border border-white/5 rounded-2xl overflow-hidden transition-all duration-300 hover:border-amarillo/30 hover:-translate-y-1 group">
+                    <div class="h-[160px] flex items-center justify-center relative overflow-hidden bg-[linear-gradient(135deg,#0d1020_0%,#1a1a1a_100%)]">
+                        <div class="absolute w-[120px] h-[120px] rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-15 bg-[#60a5fa]"></div><div class="text-[72px] relative z-10 transition-transform duration-300 group-hover:scale-110">➕</div>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex items-start justify-between gap-2 mb-1.5">
+                            <div class="text-[16px] font-bold text-white leading-tight">Aditivo Bardhal 1</div><span class="text-[11px] font-bold tracking-[1px] uppercase py-0.5 px-2 rounded-full border bg-[#60a5fa]/10 text-[#60a5fa] border-[#60a5fa]/20">Mantenimiento</span>
+                        </div>
+                        <div class="text-[13px] text-white/45 leading-[1.6] mb-4 flex-1">Tratamiento para afinación de motores en buen estado.</div>
+                        <div class="flex items-center justify-between pt-3 border-t border-white/5">
+                            <div class="flex items-center gap-1.5 text-[12px] text-white/35 font-semibold before:content-[''] before:w-1.5 before:h-1.5 before:bg-[#4ade80] before:rounded-full">En existencia</div>
+                            <button class="text-[12px] font-bold tracking-[1px] uppercase text-amarillo bg-amarillo/10 border border-amarillo/20 py-1.5 px-3.5 rounded-md hover:bg-amarillo/20 hover:border-amarillo/40" onclick="cotizar('Aditivo Bardhal 1')">Cotizar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col bg-gris-oscuro border border-white/5 rounded-2xl overflow-hidden transition-all duration-300 hover:border-amarillo/30 hover:-translate-y-1 group">
+                    <div class="h-[160px] flex items-center justify-center relative overflow-hidden bg-[linear-gradient(135deg,#0d1020_0%,#1a1a1a_100%)]">
+                        <div class="absolute w-[120px] h-[120px] rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-15 bg-[#60a5fa]"></div><div class="text-[72px] relative z-10 transition-transform duration-300 group-hover:scale-110">➕</div>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex items-start justify-between gap-2 mb-1.5">
+                            <div class="text-[16px] font-bold text-white leading-tight">Aditivo Bardhal 2</div><span class="text-[11px] font-bold tracking-[1px] uppercase py-0.5 px-2 rounded-full border bg-[#60a5fa]/10 text-[#60a5fa] border-[#60a5fa]/20">Restaurador</span>
+                        </div>
+                        <div class="text-[13px] text-white/45 leading-[1.6] mb-4 flex-1">Tratamiento de aceite para motores con desgaste y humo.</div>
+                        <div class="flex items-center justify-between pt-3 border-t border-white/5">
+                            <div class="flex items-center gap-1.5 text-[12px] text-white/35 font-semibold before:content-[''] before:w-1.5 before:h-1.5 before:bg-[#4ade80] before:rounded-full">En existencia</div>
+                            <button class="text-[12px] font-bold tracking-[1px] uppercase text-amarillo bg-amarillo/10 border border-amarillo/20 py-1.5 px-3.5 rounded-md hover:bg-amarillo/20 hover:border-amarillo/40" onclick="cotizar('Aditivo Bardhal 2')">Cotizar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col bg-gris-oscuro border border-white/5 rounded-2xl overflow-hidden transition-all duration-300 hover:border-amarillo/30 hover:-translate-y-1 group">
+                    <div class="h-[160px] flex items-center justify-center relative overflow-hidden bg-[linear-gradient(135deg,#0d1020_0%,#1a1a1a_100%)]">
+                        <div class="absolute w-[120px] h-[120px] rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-15 bg-[#60a5fa]"></div><div class="text-[72px] relative z-10 transition-transform duration-300 group-hover:scale-110">💨</div>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex items-start justify-between gap-2 mb-1.5">
+                            <div class="text-[16px] font-bold text-white leading-tight">Carboclean</div><span class="text-[11px] font-bold tracking-[1px] uppercase py-0.5 px-2 rounded-full border bg-[#60a5fa]/10 text-[#60a5fa] border-[#60a5fa]/20">Aerosol</span>
+                        </div>
+                        <div class="text-[13px] text-white/45 leading-[1.6] mb-4 flex-1">Poderoso limpiador de carburadores y partes metálicas.</div>
+                        <div class="flex items-center justify-between pt-3 border-t border-white/5">
+                            <div class="flex items-center gap-1.5 text-[12px] text-white/35 font-semibold before:content-[''] before:w-1.5 before:h-1.5 before:bg-[#4ade80] before:rounded-full">En existencia</div>
+                            <button class="text-[12px] font-bold tracking-[1px] uppercase text-amarillo bg-amarillo/10 border border-amarillo/20 py-1.5 px-3.5 rounded-md hover:bg-amarillo/20 hover:border-amarillo/40" onclick="cotizar('Carboclean Aerosol')">Cotizar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col bg-gris-oscuro border border-white/5 rounded-2xl overflow-hidden transition-all duration-300 hover:border-amarillo/30 hover:-translate-y-1 group">
+                    <div class="h-[160px] flex items-center justify-center relative overflow-hidden bg-[linear-gradient(135deg,#0d1020_0%,#1a1a1a_100%)]">
+                        <div class="absolute w-[120px] h-[120px] rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-15 bg-[#60a5fa]"></div><div class="text-[72px] relative z-10 transition-transform duration-300 group-hover:scale-110">🌬️</div>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex items-start justify-between gap-2 mb-1.5">
+                            <div class="text-[16px] font-bold text-white leading-tight">Limpiador de cuerpo de aceleración</div><span class="text-[11px] font-bold tracking-[1px] uppercase py-0.5 px-2 rounded-full border bg-[#60a5fa]/10 text-[#60a5fa] border-[#60a5fa]/20">400ml</span>
+                        </div>
+                        <div class="text-[13px] text-white/45 leading-[1.6] mb-4 flex-1">Solución en aerosol para limpieza profunda del sistema de admisión.</div>
+                        <div class="flex items-center justify-between pt-3 border-t border-white/5">
+                            <div class="flex items-center gap-1.5 text-[12px] text-white/35 font-semibold before:content-[''] before:w-1.5 before:h-1.5 before:bg-[#4ade80] before:rounded-full">En existencia</div>
+                            <button class="text-[12px] font-bold tracking-[1px] uppercase text-amarillo bg-amarillo/10 border border-amarillo/20 py-1.5 px-3.5 rounded-md hover:bg-amarillo/20 hover:border-amarillo/40" onclick="cotizar('Limpiador cuerpo aceleración 400ml')">Cotizar</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="grupo-categoria reveal mb-16" id="grupo-bandas" data-grupo="bandas">
+            <div class="flex items-center gap-4 mb-6">
+                <div class="w-11 h-11 bg-[#f87171]/10 border border-[#f87171]/25 rounded-lg flex items-center justify-center text-[20px]">⚙️</div>
+                <div class="font-bebas text-[28px] tracking-[2px] text-white">Bandas y transmisión</div>
+                <div class="flex-1 h-px bg-white/5"></div>
+                <div class="text-[12px] text-white/30 font-semibold tracking-[1px]">3 productos</div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="flex flex-col md:flex-row md:col-span-2 bg-gris-oscuro border border-white/5 rounded-2xl overflow-hidden transition-all duration-300 cursor-default hover:border-amarillo/30 hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,0.4),0_0_0_1px_rgba(250,204,21,0.1)] group">
+                    <div class="h-[160px] md:h-auto md:w-[240px] shrink-0 flex items-center justify-center relative overflow-hidden bg-[linear-gradient(135deg,#1a0d0d_0%,#1a1a1a_100%)]">
+                        <div class="absolute w-[120px] h-[120px] rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-15 bg-[#f87171]"></div>
+                        <div class="text-[72px] md:text-[90px] relative z-10 transition-transform duration-300 drop-shadow-[0_8px_16px_rgba(0,0,0,0.5)] group-hover:scale-110 group-hover:-translate-y-1">⚙️</div>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex items-start justify-between gap-2 mb-1.5">
+                            <div class="text-[16px] font-bold text-white leading-tight">Kit de distribución completo</div>
+                            <span class="text-[11px] font-bold tracking-[1px] uppercase py-0.5 px-2 rounded-full border whitespace-nowrap shrink-0 bg-[#f87171]/10 text-[#f87171] border-[#f87171]/20">Crítico</span>
+                        </div>
+                        <div class="text-[13px] text-white/45 leading-[1.6] mb-4 flex-1">Banda de distribución + tensor + polea guía. Kit completo para un reemplazo correcto y sin sorpresas.</div>
+                        <div class="flex items-center justify-between pt-3 border-t border-white/5">
+                            <div class="flex items-center gap-1.5 text-[12px] text-white/35 font-semibold before:content-[''] before:w-1.5 before:h-1.5 before:bg-[#4ade80] before:rounded-full">En existencia</div>
+                            <button class="text-[12px] font-bold tracking-[1px] uppercase text-amarillo bg-amarillo/10 border border-amarillo/20 py-1.5 px-3.5 rounded-md transition-all duration-200 cursor-pointer font-barlow hover:bg-amarillo/20 hover:border-amarillo/40" onclick="cotizar('Kit de distribución completo')">Cotizar</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-col bg-gris-oscuro border border-white/5 rounded-2xl overflow-hidden transition-all duration-300 cursor-default hover:border-amarillo/30 hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,0.4),0_0_0_1px_rgba(250,204,21,0.1)] group">
+                    <div class="h-[160px] flex items-center justify-center relative overflow-hidden bg-[linear-gradient(135deg,#1a0d0d_0%,#1a1a1a_100%)]">
+                        <div class="absolute w-[120px] h-[120px] rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-15 bg-[#f87171]"></div>
+                        <div class="text-[72px] relative z-10 transition-transform duration-300 drop-shadow-[0_8px_16px_rgba(0,0,0,0.5)] group-hover:scale-110 group-hover:-translate-y-1">🔄</div>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex items-start justify-between gap-2 mb-1.5">
+                            <div class="text-[16px] font-bold text-white leading-tight">Banda serpentina</div>
+                            <span class="text-[11px] font-bold tracking-[1px] uppercase py-0.5 px-2 rounded-full border whitespace-nowrap shrink-0 bg-[#f87171]/10 text-[#f87171] border-[#f87171]/20">Mantenimiento</span>
+                        </div>
+                        <div class="text-[13px] text-white/45 leading-[1.6] mb-4 flex-1">Acciona el alternador, la dirección hidráulica y el compresor del aire. Repuesto esencial.</div>
+                        <div class="flex items-center justify-between pt-3 border-t border-white/5">
+                            <div class="flex items-center gap-1.5 text-[12px] text-white/35 font-semibold before:content-[''] before:w-1.5 before:h-1.5 before:bg-[#4ade80] before:rounded-full">En existencia</div>
+                            <button class="text-[12px] font-bold tracking-[1px] uppercase text-amarillo bg-amarillo/10 border border-amarillo/20 py-1.5 px-3.5 rounded-md transition-all duration-200 cursor-pointer font-barlow hover:bg-amarillo/20 hover:border-amarillo/40" onclick="cotizar('Banda serpentina')">Cotizar</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-col bg-gris-oscuro border border-white/5 rounded-2xl overflow-hidden transition-all duration-300 cursor-default hover:border-amarillo/30 hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,0.4),0_0_0_1px_rgba(250,204,21,0.1)] group">
+                    <div class="h-[160px] flex items-center justify-center relative overflow-hidden bg-[linear-gradient(135deg,#1a0d0d_0%,#1a1a1a_100%)]">
+                        <div class="absolute w-[120px] h-[120px] rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-15 bg-[#f87171]"></div>
+                        <div class="text-[72px] relative z-10 transition-transform duration-300 drop-shadow-[0_8px_16px_rgba(0,0,0,0.5)] group-hover:scale-110 group-hover:-translate-y-1">🎯</div>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex items-start justify-between gap-2 mb-1.5">
+                            <div class="text-[16px] font-bold text-white leading-tight">Tensor de banda</div>
+                            <span class="text-[11px] font-bold tracking-[1px] uppercase py-0.5 px-2 rounded-full border whitespace-nowrap shrink-0 bg-[#f87171]/10 text-[#f87171] border-[#f87171]/20">Precisión</span>
+                        </div>
+                        <div class="text-[13px] text-white/45 leading-[1.6] mb-4 flex-1">Mantiene la tensión correcta de la banda de distribución. Siempre cámbialo junto con la banda.</div>
+                        <div class="flex items-center justify-between pt-3 border-t border-white/5">
+                            <div class="flex items-center gap-1.5 text-[12px] text-white/35 font-semibold before:content-[''] before:w-1.5 before:h-1.5 before:bg-[#4ade80] before:rounded-full">En existencia</div>
+                            <button class="text-[12px] font-bold tracking-[1px] uppercase text-amarillo bg-amarillo/10 border border-amarillo/20 py-1.5 px-3.5 rounded-md transition-all duration-200 cursor-pointer font-barlow hover:bg-amarillo/20 hover:border-amarillo/40" onclick="cotizar('Tensor de banda')">Cotizar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grupo-categoria reveal mb-16" id="grupo-electrico" data-grupo="electrico">
+            <div class="flex items-center gap-4 mb-6">
+                <div class="w-11 h-11 bg-[#34d399]/10 border border-[#34d399]/25 rounded-lg flex items-center justify-center text-[20px]">⚡</div>
+                <div class="font-bebas text-[28px] tracking-[2px] text-white">Sistema eléctrico</div>
+                <div class="flex-1 h-px bg-white/5"></div>
+                <div class="text-[12px] text-white/30 font-semibold tracking-[1px]">3 productos</div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="flex flex-col md:flex-row md:col-span-2 bg-gris-oscuro border border-white/5 rounded-2xl overflow-hidden transition-all duration-300 cursor-default hover:border-amarillo/30 hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,0.4),0_0_0_1px_rgba(250,204,21,0.1)] group">
+                    <div class="h-[160px] md:h-auto md:w-[240px] shrink-0 flex items-center justify-center relative overflow-hidden bg-[linear-gradient(135deg,#0d1a18_0%,#1a1a1a_100%)]">
+                        <div class="absolute w-[120px] h-[120px] rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-15 bg-[#34d399]"></div>
+                        <div class="text-[72px] md:text-[90px] relative z-10 transition-transform duration-300 drop-shadow-[0_8px_16px_rgba(0,0,0,0.5)] group-hover:scale-110 group-hover:-translate-y-1">⚡</div>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex items-start justify-between gap-2 mb-1.5">
+                            <div class="text-[16px] font-bold text-white leading-tight">Bujías de encendido</div>
+                            <span class="text-[11px] font-bold tracking-[1px] uppercase py-0.5 px-2 rounded-full border whitespace-nowrap shrink-0 bg-[#34d399]/10 text-[#34d399] border-[#34d399]/20">Esencial</span>
+                        </div>
+                        <div class="text-[13px] text-white/45 leading-[1.6] mb-4 flex-1">Bujías estándar, de iridio y de platino. Un juego de bujías en buen estado mejora el arranque. Marcas: NGK, Bosch, Champion, Denso.</div>
+                        <div class="flex items-center justify-between pt-3 border-t border-white/5">
+                            <div class="flex items-center gap-1.5 text-[12px] text-white/35 font-semibold before:content-[''] before:w-1.5 before:h-1.5 before:bg-[#4ade80] before:rounded-full">En existencia</div>
+                            <button class="text-[12px] font-bold tracking-[1px] uppercase text-amarillo bg-amarillo/10 border border-amarillo/20 py-1.5 px-3.5 rounded-md transition-all duration-200 cursor-pointer font-barlow hover:bg-amarillo/20 hover:border-amarillo/40" onclick="cotizar('Bujías de encendido')">Cotizar</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-col bg-gris-oscuro border border-white/5 rounded-2xl overflow-hidden transition-all duration-300 cursor-default hover:border-amarillo/30 hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,0.4),0_0_0_1px_rgba(250,204,21,0.1)] group">
+                    <div class="h-[160px] flex items-center justify-center relative overflow-hidden bg-[linear-gradient(135deg,#0d1a18_0%,#1a1a1a_100%)]">
+                        <div class="absolute w-[120px] h-[120px] rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-15 bg-[#34d399]"></div>
+                        <div class="text-[72px] relative z-10 transition-transform duration-300 drop-shadow-[0_8px_16px_rgba(0,0,0,0.5)] group-hover:scale-110 group-hover:-translate-y-1">🔌</div>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex items-start justify-between gap-2 mb-1.5">
+                            <div class="text-[16px] font-bold text-white leading-tight">Cables de bujía</div>
+                            <span class="text-[11px] font-bold tracking-[1px] uppercase py-0.5 px-2 rounded-full border whitespace-nowrap shrink-0 bg-[#34d399]/10 text-[#34d399] border-[#34d399]/20">Ignición</span>
+                        </div>
+                        <div class="text-[13px] text-white/45 leading-[1.6] mb-4 flex-1">Juego de cables de alta tensión para encendido. Mejoran la chispa y el arranque en frío.</div>
+                        <div class="flex items-center justify-between pt-3 border-t border-white/5">
+                            <div class="flex items-center gap-1.5 text-[12px] text-white/35 font-semibold before:content-[''] before:w-1.5 before:h-1.5 before:bg-[#4ade80] before:rounded-full">En existencia</div>
+                            <button class="text-[12px] font-bold tracking-[1px] uppercase text-amarillo bg-amarillo/10 border border-amarillo/20 py-1.5 px-3.5 rounded-md transition-all duration-200 cursor-pointer font-barlow hover:bg-amarillo/20 hover:border-amarillo/40" onclick="cotizar('Cables de bujía')">Cotizar</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-col bg-gris-oscuro border border-white/5 rounded-2xl overflow-hidden transition-all duration-300 cursor-default hover:border-amarillo/30 hover:-translate-y-1 hover:shadow-[0_16px_48px_rgba(0,0,0,0.4),0_0_0_1px_rgba(250,204,21,0.1)] group">
+                    <div class="h-[160px] flex items-center justify-center relative overflow-hidden bg-[linear-gradient(135deg,#0d1a18_0%,#1a1a1a_100%)]">
+                        <div class="absolute w-[120px] h-[120px] rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-15 bg-[#34d399]"></div>
+                        <div class="text-[72px] relative z-10 transition-transform duration-300 drop-shadow-[0_8px_16px_rgba(0,0,0,0.5)] group-hover:scale-110 group-hover:-translate-y-1">🔆</div>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex items-start justify-between gap-2 mb-1.5">
+                            <div class="text-[16px] font-bold text-white leading-tight">Alternador remanufacturado</div>
+                            <span class="text-[11px] font-bold tracking-[1px] uppercase py-0.5 px-2 rounded-full border whitespace-nowrap shrink-0 bg-[#34d399]/10 text-[#34d399] border-[#34d399]/20">Reconstruido</span>
+                        </div>
+                        <div class="text-[13px] text-white/45 leading-[1.6] mb-4 flex-1">Alternadores reconstruidos con garantía. Carga correctamente la batería y alimenta el sistema eléctrico.</div>
+                        <div class="flex items-center justify-between pt-3 border-t border-white/5">
+                            <div class="flex items-center gap-1.5 text-[12px] text-white/35 font-semibold before:content-[''] before:w-1.5 before:h-1.5 before:bg-[#4ade80] before:rounded-full">En existencia</div>
+                            <button class="text-[12px] font-bold tracking-[1px] uppercase text-amarillo bg-amarillo/10 border border-amarillo/20 py-1.5 px-3.5 rounded-md transition-all duration-200 cursor-pointer font-barlow hover:bg-amarillo/20 hover:border-amarillo/40" onclick="cotizar('Alternador remanufacturado')">Cotizar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <div class="bg-gris-oscuro border-y border-white/5 py-10 px-8 overflow-hidden">
+        <div class="text-center text-[12px] font-bold tracking-[3px] uppercase text-white/25 mb-6">Marcas que manejamos</div>
+        <div class="flex gap-8 justify-center flex-wrap items-center">
+            <div class="font-bebas text-[20px] tracking-[3px] text-white/15 transition-colors duration-300 hover:text-amarillo/60 cursor-default">BARDAHL</div>
+            <div class="font-bebas text-[20px] tracking-[3px] text-white/15 transition-colors duration-300 hover:text-amarillo/60 cursor-default">BOSCH</div>
+            <div class="font-bebas text-[20px] tracking-[3px] text-white/15 transition-colors duration-300 hover:text-amarillo/60 cursor-default">NGK</div>
+            <div class="font-bebas text-[20px] tracking-[3px] text-white/15 transition-colors duration-300 hover:text-amarillo/60 cursor-default">CHAMPION</div>
+            <div class="font-bebas text-[20px] tracking-[3px] text-white/15 transition-colors duration-300 hover:text-amarillo/60 cursor-default">DENSO</div>
+            <div class="font-bebas text-[20px] tracking-[3px] text-white/15 transition-colors duration-300 hover:text-amarillo/60 cursor-default">AC DELCO</div>
+            <div class="font-bebas text-[20px] tracking-[3px] text-white/15 transition-colors duration-300 hover:text-amarillo/60 cursor-default">VARTA</div>
+            <div class="font-bebas text-[20px] tracking-[3px] text-white/15 transition-colors duration-300 hover:text-amarillo/60 cursor-default">PENNZOIL</div>
+            <div class="font-bebas text-[20px] tracking-[3px] text-white/15 transition-colors duration-300 hover:text-amarillo/60 cursor-default">MOBIL 1</div>
+            <div class="font-bebas text-[20px] tracking-[3px] text-white/15 transition-colors duration-300 hover:text-amarillo/60 cursor-default">QUAKER</div>
+            <div class="font-bebas text-[20px] tracking-[3px] text-white/15 transition-colors duration-300 hover:text-amarillo/60 cursor-default">ROSHFRAN</div>
+            <div class="font-bebas text-[20px] tracking-[3px] text-white/15 transition-colors duration-300 hover:text-amarillo/60 cursor-default">CASTROL</div>
+        </div>
+    </div>
+
+    <section class="bg-amarillo py-20 px-8 text-center">
+        <h2 class="font-bebas text-[clamp(36px,5vw,64px)] text-black tracking-[2px] mb-3">¿No encuentras lo que buscas?</h2>
+        <p class="text-[17px] text-black/65 mb-8 max-w-[500px] mx-auto">Dinos qué necesitas y lo conseguimos. Pregunta sin compromiso, cotizamos sin costo.</p>
+        <a href="Contacto.html" class="bg-black text-amarillo font-bold text-[14px] tracking-[2px] uppercase py-[14px] px-9 rounded-lg inline-block transition-all duration-200 no-underline hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.4)]">Preguntar por una pieza</a>
+    </section>
+
+    <footer class="bg-gris-oscuro border-t border-white/5">
+        <div class="max-w-[1200px] mx-auto pt-12 pb-6 px-8 flex items-center justify-between gap-8 flex-wrap">
+            <div class="font-bebas text-[22px] tracking-[2px] text-white">Refaccionaria <span class="text-amarillo">Leo</span></div>
+            <div class="flex gap-1 flex-wrap justify-center">
+                <a href="index.html" class="py-[7px] px-3.5 rounded-[6px] text-[13px] font-semibold tracking-[1px] uppercase no-underline text-white/40 transition-colors duration-200 hover:text-white hover:bg-white/5">Inicio</a>
+                <a href="Productos.html" class="py-[7px] px-3.5 rounded-[6px] text-[13px] font-semibold tracking-[1px] uppercase no-underline text-white/40 transition-colors duration-200 hover:text-white hover:bg-white/5">Productos</a>
+                <a href="Contacto.html" class="py-[7px] px-3.5 rounded-[6px] text-[13px] font-semibold tracking-[1px] uppercase no-underline text-white/40 transition-colors duration-200 hover:text-white hover:bg-white/5">Contacto</a>
+                <a href="Login.html" class="py-[7px] px-3.5 rounded-[6px] text-[13px] font-semibold tracking-[1px] uppercase no-underline text-white/40 transition-colors duration-200 hover:text-white hover:bg-white/5">Iniciar sesión</a>
+            </div>
+            <div class="text-[13px] text-white/25 w-full text-center md:w-auto">Chimalhuacán, Estado de México</div>
+        </div>
+        <div class="border-t border-white/5 max-w-[1200px] mx-auto py-6 px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-[13px] text-white/20">
+            <span>© 2026 Refaccionaria Leo — Todos los derechos reservados</span>
+            <span>+52 123 456 7890</span>
+        </div>
+    </footer>
+
+    <div class="toast fixed bottom-8 right-8 bg-gris-oscuro border border-amarillo/30 rounded-xl py-4 px-6 flex items-center gap-3 text-[14px] text-white z-[200] max-w-[320px] shadow-[0_8px_32px_rgba(0,0,0,0.5)]" id="toast">
+        <div class="text-[22px] shrink-0">✅</div>
+        <div>
+            <div class="font-bold mb-0.5" id="toast-titulo">¡Listo!</div>
+            <div class="text-[12px] text-white/50" id="toast-msg">Llámanos al +52 123 456 7890 para cotizar.</div>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script>
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        function filtrar(btn) {
+            document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('activo'));
+            btn.classList.add('activo');
+
+            const cat = btn.dataset.cat;
+            document.querySelectorAll('.grupo-categoria').forEach(g => {
+                if (cat === 'todos' || g.dataset.grupo === cat) {
+                    g.classList.remove('oculto');
+                } else {
+                    g.classList.add('oculto');
+                }
+            });
+        }
+
+        function cotizar(nombreProducto) {
+            const usuario = getCurrentUser();
+            if (!usuario) {
+                alert("Debes iniciar sesión para agregar productos al carrito.");
+                window.location.href = "Login.html";
+                return;
+            }
+
+            const prod = CATALOGO.find(p => p.nombre === nombreProducto);
+            if (!prod) {
+                alert("Producto no encontrado en el catálogo.");
+                return;
+            }
+
+            const stockActual = obtenerStock(prod.id);
+            if (stockActual < 1) {
+                toast.querySelector('#toast-titulo').textContent = 'Sin stock';
+                toast.querySelector('#toast-msg').textContent = 'Este producto no está disponible por el momento.';
+                toast.classList.add('visible');
+                setTimeout(() => toast.classList.remove('visible'), 3000);
+                return;
+            }
+
+            let cart = getCart(usuario.email);
+            const existente = cart.find(item => item.id_producto === prod.id);
+            const cantidadEnCarrito = existente ? existente.cantidad : 0;
+
+            if (cantidadEnCarrito >= stockActual) {
+                alert("No hay suficiente stock disponible.");
+                return;
+            }
+
+            if (existente) {
+                existente.cantidad += 1;
+            } else {
+                cart.push({
+                    id_producto: prod.id,
+                    nombre: prod.nombre,
+                    precio: prod.precio,
+                    cantidad: 1,
+                    imagen: prod.imagen
+                });
+            }
+
+            saveCart(usuario.email, cart);
+
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-titulo').textContent = '¡Agregado!';
+            document.getElementById('toast-msg').textContent = prod.nombre + ' se añadió al carrito.';
+            toast.classList.add('visible');
+            setTimeout(() => toast.classList.remove('visible'), 3000);
+        }
+
+        function agregarAlCarrito(idProducto) {
+            const usuario = getCurrentUser();
+            if (!usuario) {
+                alert("Debes iniciar sesión para agregar productos al carrito.");
+                window.location.href = "Login.html";
+                return;
+            }
+
+            const prod = CATALOGO.find(p => p.id === idProducto);
+            if (!prod) return;
+
+            let cart = getCart(usuario.email);
+            const existente = cart.find(item => item.id_producto === prod.id);
+
+            if (existente) {
+                existente.cantidad += 1;
+            } else {
+                cart.push({
+                    id_producto: prod.id,
+                    nombre: prod.nombre,
+                    precio: prod.precio,
+                    cantidad: 1,
+                    imagen: prod.imagen
+                });
+            }
+
+            saveCart(usuario.email, cart);
+            alert('¡' + prod.nombre + ' agregado al carrito!');
+        }
+
+        const reveals = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, i) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => entry.target.classList.add('visible'), i * 100);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.08 });
+        reveals.forEach(el => observer.observe(el));
+    </script>
+
+</body>
+</html>

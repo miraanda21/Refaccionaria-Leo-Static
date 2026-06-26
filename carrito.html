@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Carrito | Refaccionaria Leo</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style type="text/tailwindcss">
+        @theme {
+            --color-amarillo: #FACC15;
+            --color-negro: #0a0a0a;
+            --color-gris-oscuro: #1a1a1a;
+            --color-gris-medio: #2a2a2a;
+            --color-gris-claro: #f5f5f0;
+            --font-barlow: 'Barlow', sans-serif;
+            --font-bebas: 'Bebas Neue', sans-serif;
+        }
+        .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+        .reveal.visible { opacity: 1; transform: none; }
+        .toast { transform: translateY(100px); opacity: 0; transition: transform 0.4s ease, opacity 0.4s ease; pointer-events: none; }
+        .toast.visible { transform: translateY(0); opacity: 1; }
+        /* Select oscuro personalizado */
+        select option { background-color: #0a0a0a; color: white; }
+    </style>
+</head>
+<body class="font-barlow bg-negro text-gris-claro overflow-x-hidden m-0 p-0 box-border min-h-screen flex flex-col">
+
+    <!-- NAV STANDARD -->
+    <nav class="fixed top-0 left-0 right-0 z-[100] bg-negro/92 backdrop-blur-[12px] border-b border-amarillo/15 py-[14px]">
+        <div class="max-w-[1200px] mx-auto px-8 flex items-center justify-between relative">
+            <a href="index.html" class="flex items-center gap-[10px] no-underline">
+                <div class="w-[36px] h-[36px] bg-amarillo rounded-[6px] flex items-center justify-center font-bebas text-[18px] text-black">⚙️</div>
+                <div class="font-bebas text-[22px] tracking-[2px] text-white">Refaccionaria <span class="text-amarillo">Leo</span></div>
+            </a>
+            <ul class="list-none m-0 p-0 hidden md:flex items-center gap-1">
+                <li><a href="index.html" class="block py-[7px] px-4 rounded-[6px] text-[13px] font-semibold tracking-[1.5px] uppercase no-underline text-white/75 transition-colors duration-200 hover:text-white hover:bg-white/10">Inicio</a></li>
+                <li><a href="Productos.html" class="block py-[7px] px-4 rounded-[6px] text-[13px] font-semibold tracking-[1.5px] uppercase no-underline text-white/75 transition-colors duration-200 hover:text-white hover:bg-white/10">Productos</a></li>
+                <li><a href="admin.html" id="nav-admin" class="hidden py-[7px] px-4 rounded-[6px] text-[13px] font-semibold tracking-[1.5px] uppercase no-underline text-white/75 transition-colors duration-200 hover:text-white hover:bg-white/10">Panel Dueño</a></li>
+                <li><button onclick="logout()" class="block py-[7px] px-4 rounded-[6px] text-[13px] font-semibold tracking-[1.5px] uppercase no-underline transition-colors duration-200 bg-red-500/20 text-red-400 hover:bg-red-500/40 cursor-pointer">Salir</button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="pt-[9rem] pb-[2rem] px-8 relative overflow-hidden flex-none">
+        <div class="absolute inset-0 bg-[linear-gradient(135deg,#0a0a0a_0%,#111_60%,#0a0a0a_100%)]"></div>
+        <div class="absolute top-[-30%] right-[-5%] w-[600px] h-[600px] bg-[radial-gradient(circle,rgba(250,204,21,0.1)_0%,transparent_65%)] rounded-full pointer-events-none"></div>
+        <div class="relative max-w-[1200px] mx-auto flex flex-col md:flex-row items-start md:items-end justify-between gap-8">
+            <div>
+                <div class="inline-flex items-center gap-2 bg-amarillo/12 border border-amarillo/30 py-1.5 px-3.5 rounded-full text-[12px] font-semibold tracking-[2px] uppercase text-amarillo mb-4">Checkout</div>
+                <h1 class="font-bebas text-[clamp(40px,6vw,60px)] tracking-[2px] leading-[0.95] mb-2">Mi <span class="text-amarillo">Carrito</span></h1>
+                <p class="text-[16px] text-white/50 max-w-[480px] leading-[1.7]" id="nombre-usuario-display">Revisa tus productos antes de pagar.</p>
+            </div>
+        </div>
+    </section>
+
+    <main class="flex-grow max-w-[1200px] w-full mx-auto px-8 pb-20 relative z-10">
+        
+        <!-- CARRITO VACÍO -->
+        <div id="carrito-vacio" class="hidden text-center py-20 bg-gris-oscuro border border-white/5 rounded-2xl reveal">
+            <div class="text-[60px] mb-4">🛒</div>
+            <h2 class="font-bebas text-[32px] tracking-[2px] mb-2">Tu carrito está vacío</h2>
+            <p class="text-[14px] text-white/40 mb-8">Aún no has agregado ninguna refacción.</p>
+            <a href="Productos.html" class="bg-amarillo text-black font-barlow font-bold text-[14px] tracking-[2px] uppercase py-[12px] px-8 rounded-[10px] no-underline transition-all duration-200 hover:bg-[#fde047] hover:-translate-y-0.5 shadow-[0_4px_20px_rgba(250,204,21,0.25)]">Ir al Catálogo</a>
+        </div>
+
+        <!-- CARRITO CON CONTENIDO -->
+        <div id="carrito-contenido" class="hidden grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-8 reveal">
+            
+            <!-- LISTA DE PRODUCTOS -->
+            <div class="flex flex-col gap-4" id="productos-lista">
+                <!-- Se inyecta con JS -->
+            </div>
+
+            <!-- RESUMEN Y PAGO -->
+            <div>
+                <div class="bg-gris-oscuro border border-white/5 rounded-2xl p-8 sticky top-[100px]">
+                    <h3 class="font-bebas text-[28px] tracking-[2px] mb-6 border-b border-white/10 pb-4">Resumen de <span class="text-amarillo">Orden</span></h3>
+                    
+                    <div class="flex justify-between items-center text-[14px] text-white/50 mb-3">
+                        <span>Subtotal de productos</span>
+                        <span id="resumen-subtotal" class="font-semibold text-white">$0.00</span>
+                    </div>
+                    <div class="flex justify-between items-center text-[14px] text-white/50 mb-6">
+                        <span>Costo de envío (Fijo)</span>
+                        <span id="resumen-envio" class="font-semibold text-white">$150.00</span>
+                    </div>
+                    
+                    <div class="flex justify-between items-center text-[18px] text-white font-bold mb-8 border-t border-white/10 pt-4">
+                        <span>Total (MXN)</span>
+                        <span id="resumen-total" class="text-amarillo text-[24px]">$0.00</span>
+                    </div>
+
+                    <form id="form-checkout" onsubmit="procesarPedido(event)">
+                        <div class="mb-4">
+                            <label class="block text-[11px] font-bold tracking-[1.5px] uppercase text-white/40 mb-2">ID Dirección de Envío</label>
+                            <input type="number" id="checkout-direccion" required min="1" value="1" class="w-full bg-white/5 border border-white/10 rounded-[10px] py-[13px] px-4 text-[14px] text-white font-barlow outline-none focus:border-amarillo/50 focus:bg-amarillo/5 placeholder:text-white/20">
+                            <p class="text-[11px] text-white/30 mt-1">Ingresa el ID de la dirección que registraste.</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <label class="block text-[11px] font-bold tracking-[1.5px] uppercase text-white/40 mb-2">Método de Pago</label>
+                            <select id="checkout-pago" required class="w-full bg-white/5 border border-white/10 rounded-[10px] py-[13px] px-4 text-[14px] text-white font-barlow outline-none focus:border-amarillo/50 focus:bg-amarillo/5 cursor-pointer">
+                                <option value="tarjeta_debito">Tarjeta de Débito</option>
+                                <option value="tarjeta_credito">Tarjeta de Crédito</option>
+                                <option value="transferencia">Transferencia (SPEI)</option>
+                                <option value="mercado_pago">Mercado Pago</option>
+                                <option value="efectivo">Efectivo en OXXO/Tienda</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" id="btn-submit-checkout" class="w-full bg-amarillo text-black font-barlow font-bold text-[15px] tracking-[2px] uppercase py-[15px] px-6 rounded-[10px] border-none cursor-pointer transition-all duration-200 shadow-[0_4px_20px_rgba(250,204,21,0.25)] hover:bg-[#fde047] hover:-translate-y-0.5 hover:shadow-[0_8px_30px_rgba(250,204,21,0.4)] flex justify-center items-center gap-2">
+                            <span id="btn-text">Confirmar Pedido</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FOOTER STANDARD -->
+    <footer class="bg-gris-oscuro border-t border-white/5 mt-auto">
+        <div class="border-t border-white/5 max-w-[1200px] mx-auto py-6 px-8 flex items-center justify-between text-[13px] text-white/25">
+            <span>© 2026 Refaccionaria Leo</span>
+            <span>Chimalhuacán, Estado de México</span>
+        </div>
+    </footer>
+
+    <script src="data.js"></script>
+    <script>
+        let usuarioSesion = null;
+        const costoEnvio = 150.00;
+
+        document.addEventListener("DOMContentLoaded", () => {
+            usuarioSesion = getCurrentUser();
+            if (!usuarioSesion) {
+                alert("Debes iniciar sesión para acceder al carrito.");
+                window.location.href = "login.html";
+                return;
+            }
+
+            document.getElementById("nombre-usuario-display").innerText = `Cliente: ${usuarioSesion.nombre} ${usuarioSesion.apellidos}`;
+
+            if (usuarioSesion.rol == 2) {
+                document.getElementById("nav-admin").classList.remove("hidden");
+                document.getElementById("nav-admin").classList.add("block");
+            }
+
+            cargarCarrito();
+            setTimeout(() => {
+                document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+            }, 100);
+        });
+
+        function cargarCarrito() {
+            const cart = getCart(usuarioSesion.email);
+            const divVacio = document.getElementById("carrito-vacio");
+            const divContenido = document.getElementById("carrito-contenido");
+            const lista = document.getElementById("productos-lista");
+
+            if (!cart || cart.length === 0) {
+                divVacio.classList.remove("hidden");
+                divContenido.classList.add("hidden");
+                return;
+            }
+
+            divVacio.classList.add("hidden");
+            divContenido.classList.remove("hidden");
+            lista.innerHTML = "";
+            let total = 0;
+            
+            cart.forEach(item => {
+                const subtotal = item.precio * item.cantidad;
+                total += subtotal;
+                const imgVisual = item.imagen && item.imagen.startsWith('IMG/') ? `<img src="${item.imagen}" class="w-20 h-20 object-cover rounded-lg">` : `<div class="w-20 h-20 bg-black rounded-lg border border-white/10 flex items-center justify-center text-[24px]">${item.imagen || '📦'}</div>`;
+                
+                lista.innerHTML += `
+                    <div class="bg-gris-oscuro border border-white/5 rounded-2xl p-5 flex flex-col sm:flex-row items-center gap-6 transition-all hover:border-amarillo/30">
+                        ${imgVisual}
+                        <div class="flex-1 text-center sm:text-left">
+                            <h4 class="text-[18px] font-bold text-white mb-1">${item.nombre}</h4>
+                            <div class="text-[12px] text-white/40 uppercase tracking-[1px]">Cantidad: <span class="text-white font-bold">${item.cantidad}</span></div>
+                            <button onclick="eliminarDelCarrito(${item.id_producto})" class="text-[11px] text-red-400/70 hover:text-red-400 mt-1 cursor-pointer bg-transparent border-none">Eliminar</button>
+                        </div>
+                        <div class="text-center sm:text-right">
+                            <div class="text-[12px] text-white/40 uppercase tracking-[1px] mb-1">Subtotal</div>
+                            <div class="text-[20px] font-bold text-amarillo">${formatearMXN(subtotal)}</div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            document.getElementById("resumen-subtotal").innerText = formatearMXN(total);
+            document.getElementById("resumen-total").innerText = formatearMXN(total + costoEnvio);
+        }
+
+        function eliminarDelCarrito(idProducto) {
+            let cart = getCart(usuarioSesion.email);
+            cart = cart.filter(item => item.id_producto !== idProducto);
+            saveCart(usuarioSesion.email, cart);
+            cargarCarrito();
+        }
+
+        function procesarPedido(event) {
+            event.preventDefault();
+            const metodoPago = document.getElementById("checkout-pago").value;
+            const cart = getCart(usuarioSesion.email);
+
+            if (!cart || cart.length === 0) {
+                alert("Tu carrito está vacío.");
+                return;
+            }
+
+            const btnSubmit = document.getElementById("btn-submit-checkout");
+            btnSubmit.disabled = true;
+            document.getElementById("btn-text").innerText = "Guardando pedido...";
+
+            const subtotal = cart.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
+            const total = subtotal + costoEnvio;
+            const pedidos = getOrders();
+            const idPedido = pedidos.length > 0 ? Math.max(...pedidos.map(p => p.id_pedido)) + 1 : 1;
+
+            const pedido = {
+                id_pedido: idPedido,
+                fecha: new Date().toLocaleString('es-MX'),
+                cliente: usuarioSesion.nombre + ' ' + usuarioSesion.apellidos,
+                email: usuarioSesion.email,
+                metodo_pago: metodoPago,
+                direccion: "Dirección registrada en perfil",
+                items: cart.map(item => ({ id_producto: item.id_producto, nombre: item.nombre, cantidad: item.cantidad, precio: item.precio })),
+                subtotal: subtotal,
+                envio: costoEnvio,
+                total: total,
+                estado: metodoPago === 'mercado_pago' ? 'pendiente' : 'pagado'
+            };
+
+            pedidos.push(pedido);
+            saveOrders(pedidos);
+            saveCart(usuarioSesion.email, []);
+
+            document.getElementById("btn-text").innerText = "¡Pedido guardado!";
+            btnSubmit.style.background = 'rgba(74,222,128,0.18)';
+            btnSubmit.style.color = '#4ade80';
+
+            const descargar = confirm("¡Pedido #" + idPedido + " generado con éxito!\nTotal: " + formatearMXN(total) + "\n\n¿Quieres descargar el pedido como archivo .txt?");
+            if (descargar) {
+                descargarPedidoTxt(pedido);
+            }
+
+            setTimeout(() => {
+                window.location.href = "index.html";
+            }, 2000);
+        }
+
+        function logout() {
+            localStorage.removeItem('rl_sesion');
+            window.location.href = "login.html";
+        }
+    </script>
+</body>
+</html>

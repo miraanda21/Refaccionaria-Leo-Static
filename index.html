@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Refaccionaria Leo | Tu tienda automotriz de confianza</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style type="text/tailwindcss">
+        @theme {
+            --color-amarillo: #FACC15;
+            --color-negro: #0a0a0a;
+            --color-gris-oscuro: #1a1a1a;
+            --color-gris-medio: #2a2a2a;
+            --color-gris-claro: #f5f5f0;
+            
+            --font-barlow: 'Barlow', sans-serif;
+            --font-bebas: 'Bebas Neue', sans-serif;
+        }
+
+        .hero-bg {
+            background: linear-gradient(135deg, #0a0a0a 0%, #111 50%, #0a0a0a 100%);
+        }
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            top: -20%; right: -10%;
+            width: 700px; height: 700px;
+            background: radial-gradient(circle, rgba(250,204,21,0.12) 0%, transparent 65%);
+            border-radius: 50%;
+        }
+        .hero-bg::after {
+            content: '';
+            position: absolute;
+            bottom: -10%; left: -5%;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(250,204,21,0.06) 0%, transparent 65%);
+            border-radius: 50%;
+        }
+
+        .hero-lines {
+            background-image:
+                linear-gradient(rgba(250,204,21,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(250,204,21,0.04) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+
+        @keyframes pulse-custom {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.3); }
+        }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .anim-badge { animation: fadeUp 0.6s ease both; }
+        .anim-title { animation: fadeUp 0.6s 0.1s ease both; }
+        .anim-desc { animation: fadeUp 0.6s 0.2s ease both; }
+        .anim-btns { animation: fadeUp 0.6s 0.3s ease both; }
+        .anim-stats { animation: fadeUp 0.6s 0.4s ease both; }
+        .anim-pulse-dot::before { animation: pulse-custom 2s infinite; }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: none;
+        }
+    </style>
+</head>
+<body class="font-barlow bg-negro text-gris-claro m-0 overflow-x-hidden box-border">
+
+    <nav class="fixed top-0 left-0 right-0 z-[100] bg-negro/92 backdrop-blur-[12px] border-b border-amarillo/15 py-[14px] transition-colors duration-300">
+        <div class="max-w-[1200px] mx-auto px-8 flex items-center justify-between relative">
+            <a href="index.html" class="flex items-center gap-[10px] no-underline">
+                <div class="w-[36px] h-[36px] bg-amarillo rounded-[6px] flex items-center justify-center font-bebas text-[18px] text-black tracking-normal"><img src="IMG/bardahl-top-logo-mobile.webp" alt="Logo Refaccionaria Leo"></div>
+                <div class="font-bebas text-[22px] tracking-[2px] text-white">Refaccionaria <span class="text-amarillo">Leo</span></div>
+            </a>
+            
+            <ul class="list-none m-0 p-0 hidden md:flex items-center gap-1">
+                <li><a href="index.html" class="block py-[7px] px-4 rounded-[6px] text-[13px] font-semibold tracking-[1.5px] uppercase no-underline transition-all duration-200 bg-amarillo text-black hover:bg-yellow-500">Inicio</a></li>
+                <li><a href="Productos.html" class="block py-[7px] px-4 rounded-[6px] text-[13px] font-semibold tracking-[1.5px] uppercase no-underline text-white/75 transition-all duration-200 hover:text-white hover:bg-white/10">Productos</a></li>
+                <li><a href="Contacto.html" class="block py-[7px] px-4 rounded-[6px] text-[13px] font-semibold tracking-[1.5px] uppercase no-underline text-white/75 transition-all duration-200 hover:text-white hover:bg-white/10">Contacto</a></li>
+                <li><a href="Login.html" class="block py-[7px] px-4 rounded-[6px] text-[13px] font-semibold tracking-[1.5px] uppercase no-underline text-white/75 transition-all duration-200 hover:text-white hover:bg-white/10">Iniciar sesión</a></li>
+            </ul>
+
+            <button id="menu-btn" class="md:hidden flex items-center justify-center p-2 text-white/80 hover:text-amarillo transition-colors focus:outline-none cursor-pointer">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+
+        <div id="mobile-menu" class="hidden absolute top-[100%] left-0 right-0 bg-negro/95 backdrop-blur-[12px] border-b border-amarillo/15 md:hidden shadow-2xl">
+            <ul class="list-none m-0 p-6 flex flex-col gap-3">
+                <li><a href="index.html" class="block py-3 px-4 rounded-lg text-[14px] font-semibold tracking-[1.5px] uppercase text-center bg-amarillo text-black">Inicio</a></li>
+                <li><a href="Productos.html" class="block py-3 px-4 rounded-lg text-[14px] font-semibold tracking-[1.5px] uppercase text-center text-white/80 hover:bg-white/10 hover:text-white transition-colors">Productos</a></li>
+                <li><a href="Contacto.html" class="block py-3 px-4 rounded-lg text-[14px] font-semibold tracking-[1.5px] uppercase text-center text-white/80 hover:bg-white/10 hover:text-white transition-colors">Contacto</a></li>
+                <li><a href="Login.html" class="block py-3 px-4 rounded-lg text-[14px] font-semibold tracking-[1.5px] uppercase text-center text-white/80 hover:bg-white/10 hover:text-white transition-colors">Iniciar sesión</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="min-h-screen flex items-center relative overflow-hidden pt-[8rem] pb-[5rem] px-8">
+        <div class="hero-bg absolute inset-0"></div>
+        <div class="hero-lines absolute inset-0"></div>
+        
+        <div class="relative max-w-[1200px] mx-auto w-full flex flex-col items-center justify-center">
+            <div class="flex flex-col items-center text-center">
+                <div class="anim-badge inline-flex items-center gap-2 bg-amarillo/12 border border-amarillo/30 py-[6px] px-[14px] rounded-full text-[15px] font-semibold tracking-[2px] uppercase text-amarillo mb-6 anim-pulse-dot before:content-[''] before:w-1.5 before:h-1.5 before:bg-amarillo before:rounded-full">
+                    Chimalhuacán, Estado de México
+                </div>
+                
+                <h1 class="anim-title font-bebas text-[clamp(52px,7vw,88px)] leading-[0.95] tracking-[2px] m-0 mb-6">
+                    Tu auto<br>
+                    merece lo <span class="text-amarillo block">mejor</span>
+                </h1>
+                
+                <p class="anim-desc text-[17px] text-white/60 leading-[1.7] mb-10 max-w-[480px] mx-auto">
+                    Refacciones automotrices de calidad, precios honestos y atención de personas que saben de autos. Más de 10 años manteniendo los vehículos en perfectas condiciones.
+                </p>
+                
+                <div class="anim-btns flex justify-center gap-3 flex-wrap">
+                    <a href="Productos.html" class="bg-amarillo text-black font-bold text-[14px] tracking-[1.5px] uppercase py-[14px] px-8 rounded-lg no-underline transition-all duration-200 shadow-[0_4px_24px_rgba(250,204,21,0.3)] hover:-translate-y-0.5 hover:shadow-[0_8px_32px_rgba(250,204,21,0.5)] hover:bg-[#fde047]">Ver productos</a>
+                    <a href="Contacto.html" class="border border-white/20 text-white/85 font-semibold text-[14px] tracking-[1.5px] uppercase py-[14px] px-7 rounded-lg no-underline transition-all duration-200 hover:border-amarillo hover:text-amarillo hover:bg-amarillo/5">Contáctanos</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="max-w-[1200px] mx-auto py-20 px-8">
+            <div class="flex items-center gap-6 my-4 mb-12">
+                <div class="flex-1 h-px bg-white/10"></div>
+                <div class="text-[30px] font-semibold tracking-[2px] uppercase text-white/20">Por qué elegirnos?</div>
+                <div class="flex-1 h-px bg-white/10"></div>
+            </div>
+            
+            <div class="reveal">
+                <h2 class="font-bebas text-[42px] tracking-[2px] mb-2">Calidad que <span class="text-amarillo">se nota</span></h2>
+                <p class="text-[16px] text-white/50 mb-12">No somos una tienda más. Somos la refaccionaria de tu colonia con el stock de una bodega.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5 reveal">
+                <div class="bg-gris-oscuro border border-white/5 rounded-2xl p-8 transition-all duration-300 relative overflow-hidden group hover:border-amarillo/20 hover:-translate-y-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[3px] after:bg-amarillo after:scale-x-0 after:origin-left after:transition-transform after:duration-300 hover:after:scale-x-100">
+                    <div class="w-[52px] h-[52px] bg-amarillo/10 border border-amarillo/20 rounded-xl flex items-center justify-center text-[26px] mb-5">⚡</div>
+                    <div class="text-[18px] font-bold mb-2 text-white">Atención rápida</div>
+                    <div class="text-[14px] text-white/50 leading-[1.65]">Sabemos que tu tiempo vale. Encontramos la pieza que necesitas sin hacerte esperar horas en mostrador.</div>
+                </div>
+                <div class="bg-gris-oscuro border border-white/5 rounded-2xl p-8 transition-all duration-300 relative overflow-hidden group hover:border-amarillo/20 hover:-translate-y-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[3px] after:bg-amarillo after:scale-x-0 after:origin-left after:transition-transform after:duration-300 hover:after:scale-x-100">
+                    <div class="w-[52px] h-[52px] bg-amarillo/10 border border-amarillo/20 rounded-xl flex items-center justify-center text-[26px] mb-5">💰</div>
+                    <div class="text-[18px] font-bold mb-2 text-white">Precios honestos</div>
+                    <div class="text-[14px] text-white/50 leading-[1.65]">Sin precios inflados ni sorpresas. Cotizamos claro desde el inicio para que puedas decidir con confianza.</div>
+                </div>
+                <div class="bg-gris-oscuro border border-white/5 rounded-2xl p-8 transition-all duration-300 relative overflow-hidden group hover:border-amarillo/20 hover:-translate-y-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[3px] after:bg-amarillo after:scale-x-0 after:origin-left after:transition-transform after:duration-300 hover:after:scale-x-100">
+                    <div class="w-[52px] h-[52px] bg-amarillo/10 border border-amarillo/20 rounded-xl flex items-center justify-center text-[26px] mb-5">🔧</div>
+                    <div class="text-[18px] font-bold mb-2 text-white">Asesoría de expertos</div>
+                    <div class="text-[14px] text-white/50 leading-[1.65]">Conocemos de mecánica. Te orientamos para que compres la pieza correcta a la primera.</div>
+                </div>
+                <div class="bg-gris-oscuro border border-white/5 rounded-2xl p-8 transition-all duration-300 relative overflow-hidden group hover:border-amarillo/20 hover:-translate-y-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[3px] after:bg-amarillo after:scale-x-0 after:origin-left after:transition-transform after:duration-300 hover:after:scale-x-100">
+
+                    <div class="w-[52px] h-[52px] bg-amarillo/10 border border-amarillo/20 rounded-xl flex items-center justify-center text-[26px] mb-5">📍</div>
+                    <div class="text-[18px] font-bold mb-2 text-white">Ubicación conveniente</div>
+                    <div class="text-[14px] text-white/50 leading-[1.65]">Estamos en Chimalhuacán, fácil de llegar y con espacio para estacionarte mientras te atendemos.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="bg-gris-oscuro border-y border-white/5">
+        <div class="max-w-[1200px] mx-auto py-20 px-8 pb-8">
+            <div class="reveal">
+                <h2 class="font-bebas text-[42px] tracking-[2px] mb-2">Nuestras <span class="text-amarillo">categorías</span></h2>
+                <p class="text-[16px] text-white/50 mb-0">Todo lo que tu vehículo necesita, en un solo lugar.</p>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-0 reveal">
+            <a href="Productos.html" class="py-10 px-8 border-r border-white/5 no-underline block relative overflow-hidden transition-colors duration-300 hover:bg-amarillo/5 group last:border-r-0">
+                <div class="font-bebas text-[60px] text-white/5 absolute top-2.5 right-4 leading-none tracking-[2px]">01</div>
+                <div class="text-[17px] font-bold text-white mb-1.5">Aceites y lubricantes</div>
+                <div class="text-[13px] text-white/40 leading-[1.6] mb-4">Motor, transmisión, diferencial y frenos. Fluidos para mantener todo funcionando.</div>
+                <span class="text-[13px] text-white/30 font-semibold tracking-[1px] transition-all duration-200 inline-block group-hover:translate-x-1 group-hover:text-amarillo">Ver más →</span>
+            </a>
+            <a href="Productos.html" class="py-10 px-8 border-r border-white/5 no-underline block relative overflow-hidden transition-colors duration-300 hover:bg-amarillo/5 group last:border-r-0">
+                <div class="font-bebas text-[60px] text-white/5 absolute top-2.5 right-4 leading-none tracking-[2px]">02</div>
+                <div class="text-[17px] font-bold text-white mb-1.5">Filtros</div>
+                <div class="text-[13px] text-white/40 leading-[1.6] mb-4">Aire, aceite, combustible y cabina. Protección para el motor y para ti.</div>
+                <span class="text-[13px] text-white/30 font-semibold tracking-[1px] transition-all duration-200 inline-block group-hover:translate-x-1 group-hover:text-amarillo">Ver más →</span>
+            </a>
+            <a href="Productos.html" class="py-10 px-8 border-r border-white/5 no-underline block relative overflow-hidden transition-colors duration-300 hover:bg-amarillo/5 group last:border-r-0">
+                <div class="font-bebas text-[60px] text-white/5 absolute top-2.5 right-4 leading-none tracking-[2px]">03</div>
+                <div class="text-[17px] font-bold text-white mb-1.5">Accesorios</div>
+                <div class="text-[13px] text-white/40 leading-[1.6] mb-4">Baterías, focos, limpiaparabrisas y todo lo que necesitas para tu día a día.</div>
+                <span class="text-[13px] text-white/30 font-semibold tracking-[1px] transition-all duration-200 inline-block group-hover:translate-x-1 group-hover:text-amarillo">Ver más →</span>
+            </a>
+            <a href="Productos.html" class="py-10 px-8 border-r border-white/5 no-underline block relative overflow-hidden transition-colors duration-300 hover:bg-amarillo/5 group last:border-r-0">
+                <div class="font-bebas text-[60px] text-white/5 absolute top-2.5 right-4 leading-none tracking-[2px]">04</div>
+                <div class="text-[17px] font-bold text-white mb-1.5">Bandas y transmisión</div>
+                <div class="text-[13px] text-white/40 leading-[1.6] mb-4">Bandas de distribución y correas para que tu motor nunca falle.</div>
+                <span class="text-[13px] text-white/30 font-semibold tracking-[1px] transition-all duration-200 inline-block group-hover:translate-x-1 group-hover:text-amarillo">Ver más →</span>
+            </a>
+        </div>
+    </div>
+
+    <section class="bg-amarillo py-20 px-8 text-center reveal">
+        <h2 class="font-bebas text-[clamp(36px,5vw,64px)] text-black tracking-[2px] mb-3">¿Necesitas una refacción específica?</h2>
+        <p class="text-[17px] text-black/65 mb-8 max-w-[500px] mx-auto">Llámanos o escríbenos y con gusto te cotizamos. Si no lo tenemos, lo conseguimos.</p>
+        <a href="Contacto.html" class="bg-black text-amarillo font-bold text-[14px] tracking-[2px] uppercase py-[14px] px-9 rounded-lg no-underline inline-block transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.4)]">Contactar ahora</a>
+    </section>
+
+    <footer class="bg-gris-oscuro border-t border-white/5">
+        <div class="max-w-[1200px] mx-auto px-8">
+            <div class="pt-12 pb-6">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3762.47739266527!2d-98.94940962411016!3d19.434973640603893!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d1e38ccc08c36d%3A0x5697fc3cc06b7c52!2sRefaccionaria%20Leo!5e0!3m2!1ses!2smx!4v1778628328421!5m2!1ses!2smx"
+                    class="w-full h-[200px] rounded-xl overflow-hidden border border-white/10 mt-12 block"
+                    allowfullscreen=""
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+        </div>
+        
+        <div class="max-w-[1200px] mx-auto pt-16 pb-8 px-8 grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr_1.5fr] gap-12">
+            <div>
+                <div class="font-bebas text-[26px] tracking-[2px] text-white mb-3">Refaccionaria <span class="text-amarillo">Leo</span></div>
+                <div class="text-[14px] text-white/40 leading-[1.7] mb-6">Tu tienda automotriz de confianza en Chimalhuacán. Más de 10 años sirviendo a los automovilistas del Estado de México con calidad, honestidad y buen servicio.</div>
+            </div>
+            
+            <div>
+                <div class="text-[12px] font-bold tracking-[2px] uppercase text-white/40 mb-5">Navegación</div>
+                <a href="index.html" class="block text-[14px] text-white/60 no-underline mb-2 transition-colors duration-200 hover:text-amarillo">Inicio</a>
+                <a href="Productos.html" class="block text-[14px] text-white/60 no-underline mb-2 transition-colors duration-200 hover:text-amarillo">Productos</a>
+                <a href="Contacto.html" class="block text-[14px] text-white/60 no-underline mb-2 transition-colors duration-200 hover:text-amarillo">Contacto</a>
+                <a href="Login.html" class="block text-[14px] text-white/60 no-underline mb-2 transition-colors duration-200 hover:text-amarillo">Iniciar sesión</a>
+                <a href="Register.html" class="block text-[14px] text-white/60 no-underline mb-2 transition-colors duration-200 hover:text-amarillo">Registrarse</a>
+            </div>
+            
+            <div>
+                <div class="text-[12px] font-bold tracking-[2px] uppercase text-white/40 mb-5">Horarios</div>
+                <div class="text-[14px] text-white/50 mb-2">
+                    <strong class="text-white/80">Lun – Vie</strong><br>8:00 am – 7:00 pm
+                </div>
+                <div class="text-[14px] text-white/50 mb-2">
+                    <strong class="text-white/80">Sábado</strong><br>Cerrado
+                </div>
+                <div class="text-[14px] text-white/35">
+                    <strong class="text-white/80">Domingo</strong><br>8:00 am - 7:00 pm
+                </div>
+            </div>
+            
+            <div>
+                <div class="text-[12px] font-bold tracking-[2px] uppercase text-white/40 mb-5">Contacto</div>
+                <div class="flex items-start gap-2.5 mb-3 text-[14px] text-white/50 leading-[1.5]">
+                    <div class="w-7 h-7 bg-amarillo/10 rounded-md flex items-center justify-center text-[13px] shrink-0 text-amarillo">📞</div>
+                    <span>+52 123 456 7890</span>
+                </div>
+                <div class="flex items-start gap-2.5 mb-3 text-[14px] text-white/50 leading-[1.5]">
+                    <div class="w-7 h-7 bg-amarillo/10 rounded-md flex items-center justify-center text-[13px] shrink-0 text-amarillo">✉️</div>
+                    <span>contacto@refaccionarialeo.mx</span>
+                </div>
+                <div class="flex items-start gap-2.5 mb-3 text-[14px] text-white/50 leading-[1.5]">
+                    <div class="w-7 h-7 bg-amarillo/10 rounded-md flex items-center justify-center text-[13px] shrink-0 text-amarillo">📍</div>
+                    <span>Av. de los Patos M4 L35, Herreros, 56334 Chimalhuacán, Méx.</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="border-t border-white/5 max-w-[1200px] mx-auto py-6 px-8 flex items-center justify-between text-[13px] text-white/25">
+            <span>© 2025 Refaccionaria Leo — Todos los derechos reservados</span>
+            <span>Chimalhuacán, Estado de México</span>
+        </div>
+    </footer>
+
+    <script>
+        const reveals = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, i) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, i * 80);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        reveals.forEach(el => observer.observe(el));
+
+        const nav = document.querySelector('nav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                nav.style.borderBottomColor = 'rgba(250,204,21,0.25)';
+            } else {
+                nav.style.borderBottomColor = 'rgba(250,204,21,0.15)';
+            }
+        });
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>

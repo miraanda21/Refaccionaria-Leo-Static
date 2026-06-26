@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Cuenta | Refaccionaria Leo</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style type="text/tailwindcss">
+        @theme {
+            --color-amarillo: #FACC15;
+            --color-negro: #0a0a0a;
+            --color-gris-oscuro: #1a1a1a;
+            --color-gris-medio: #242424;
+            --font-barlow: 'Barlow', sans-serif;
+            --font-bebas: 'Bebas Neue', sans-serif;
+        }
+        @keyframes aparecer {
+            from { opacity: 0; transform: translateX(-16px); }
+            to { opacity: 1; transform: none; }
+        }
+        @keyframes flotar {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-7px); }
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="font-barlow bg-negro text-[#f5f5f0] min-h-screen overflow-x-hidden flex flex-col m-0 p-0 box-border">
+
+    <nav class="fixed top-0 left-0 right-0 z-[100] bg-negro/92 backdrop-blur-[12px] border-b border-amarillo/15 py-[14px]">
+        <div class="max-w-[1200px] mx-auto px-8 flex items-center justify-between relative">
+            <a href="index.html" class="flex items-center gap-[10px] no-underline">
+                <div class="w-[36px] h-[36px] bg-amarillo rounded-[6px] flex items-center justify-center font-bebas text-[18px] text-black"><img src="IMG/bardahl-top-logo-mobile.webp" alt="Logo Refaccionaria Leo"></div>
+                <div class="font-bebas text-[22px] tracking-[2px] text-white">Refaccionaria <span class="text-amarillo">Leo</span></div>
+            </a>
+            
+            <ul class="list-none m-0 p-0 hidden md:flex items-center gap-1">
+                <li><a href="index.html" class="block py-[7px] px-4 rounded-[6px] text-[13px] font-semibold tracking-[1.5px] uppercase no-underline text-white/75 transition-colors duration-200 hover:text-white hover:bg-white/10">Inicio</a></li>
+                <li><a href="Productos.html" class="block py-[7px] px-4 rounded-[6px] text-[13px] font-semibold tracking-[1.5px] uppercase no-underline text-white/75 transition-colors duration-200 hover:text-white hover:bg-white/10">Productos</a></li>
+                <li><a href="Contacto.html" class="block py-[7px] px-4 rounded-[6px] text-[13px] font-semibold tracking-[1.5px] uppercase no-underline text-white/75 transition-colors duration-200 hover:text-white hover:bg-white/10">Contacto</a></li>
+                <li><a href="Login.html" class="block py-[7px] px-4 rounded-[6px] text-[13px] font-semibold tracking-[1.5px] uppercase no-underline transition-colors duration-200 bg-amarillo text-black hover:bg-yellow-500">Iniciar sesión</a></li>
+            </ul>
+
+            <button id="menu-btn" class="md:hidden flex items-center justify-center p-2 text-white/80 hover:text-amarillo transition-colors focus:outline-none cursor-pointer">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+
+        <div id="mobile-menu" class="hidden absolute top-[100%] left-0 right-0 bg-negro/95 backdrop-blur-[12px] border-b border-amarillo/15 md:hidden shadow-2xl">
+            <ul class="list-none m-0 p-6 flex flex-col gap-3">
+                <li><a href="index.html" class="block py-3 px-4 rounded-lg text-[14px] font-semibold tracking-[1.5px] uppercase text-center text-white/80 hover:bg-white/10 hover:text-white transition-colors">Inicio</a></li>
+                <li><a href="Productos.html" class="block py-3 px-4 rounded-lg text-[14px] font-semibold tracking-[1.5px] uppercase text-center text-white/80 hover:bg-white/10 hover:text-white transition-colors">Productos</a></li>
+                <li><a href="Contacto.html" class="block py-3 px-4 rounded-lg text-[14px] font-semibold tracking-[1.5px] uppercase text-center text-white/80 hover:bg-white/10 hover:text-white transition-colors">Contacto</a></li>
+                <li><a href="Login.html" class="block py-3 px-4 rounded-lg text-[14px] font-semibold tracking-[1.5px] uppercase text-center bg-amarillo text-black">Iniciar sesión</a></li>
+            </ul>
+        </div>
+    </nav>
+        <div class="bg-[#0f0f0f] relative overflow-hidden overflow-y-auto px-8 py-16 lg:py-28 flex items-start justify-center">
+            <div class="absolute top-[-10%] left-[-10%] w-[350px] h-[350px] bg-[radial-gradient(circle,rgba(250,204,21,0.04)_0%,transparent_65%)] rounded-full pointer-events-none"></div>
+
+            <div class="w-full max-w-[500px] relative z-10">
+
+                <div class="mb-8">
+                    <div class="inline-flex items-center gap-2 bg-amarillo/10 border border-amarillo/25 py-1 px-3 rounded-full text-[11px] font-bold tracking-[2px] uppercase text-amarillo mb-4 before:content-[''] before:w-1.5 before:h-1.5 before:bg-amarillo before:rounded-full">Registro gratuito</div>
+                    <h1 class="font-bebas text-[40px] tracking-[2px] leading-none mb-2">Crea tu cuenta</h1>
+                    <p class="text-[14px] text-white/40 leading-[1.6]">Completa tus datos para comenzar. Solo toma un minuto.</p>
+                </div>
+
+                <div class="text-[11px] font-bold tracking-[3px] uppercase text-white/20 my-6 mb-4 flex items-center gap-2.5 after:content-[''] after:flex-1 after:h-px after:bg-white/5">Datos personales</div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+                    <div>
+                        <label for="nombre" class="block text-[11px] font-bold tracking-[1.5px] uppercase text-white/35 mb-2">Nombre(s)</label>
+                        <div class="relative group">
+                            <input type="text" id="nombre" class="w-full bg-white/5 border border-white/10 rounded-[10px] py-3 px-3.5 pl-10 text-[14px] text-white font-barlow outline-none transition-all duration-250 focus:border-amarillo/50 focus:bg-amarillo/5 focus:shadow-[0_0_0_3px_rgba(250,204,21,0.07)] placeholder:text-white/20" placeholder="Tu nombre" oninput="validarCampo('nombre')">
+                        </div>
+                        <div class="text-[11px] text-red-400 mt-1.5 items-center gap-1 hidden" id="error-nombre">⚠ Ingresa tu nombre</div>
+                    </div>
+                    <div>
+                        <label for="apellidos" class="block text-[11px] font-bold tracking-[1.5px] uppercase text-white/35 mb-2">Apellidos</label>
+                        <div class="relative group">
+                            <input type="text" id="apellidos" class="w-full bg-white/5 border border-white/10 rounded-[10px] py-3 px-3.5 pl-10 text-[14px] text-white font-barlow outline-none transition-all duration-250 focus:border-amarillo/50 focus:bg-amarillo/5 focus:shadow-[0_0_0_3px_rgba(250,204,21,0.07)] placeholder:text-white/20" placeholder="Tus apellidos" oninput="validarCampo('apellidos')">
+                        </div>
+                        <div class="text-[11px] text-red-400 mt-1.5 items-center gap-1 hidden" id="error-apellidos">⚠ Ingresa tus apellidos</div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="telefono" class="block text-[11px] font-bold tracking-[1.5px] uppercase text-white/35 mb-2">Teléfono celular</label>
+                    <div class="flex gap-2">
+                        <div class="bg-white/5 border border-white/10 rounded-[10px] p-3 text-[14px] text-white/50 font-barlow font-semibold whitespace-nowrap shrink-0">🇲🇽 +52</div>
+                        <div class="relative group flex-1">
+                            <input type="tel" id="telefono" class="w-full bg-white/5 border border-white/10 rounded-[10px] py-3 px-3.5 pl-3.5 text-[14px] text-white font-barlow outline-none transition-all duration-250 focus:border-amarillo/50 focus:bg-amarillo/5 focus:shadow-[0_0_0_3px_rgba(250,204,21,0.07)] placeholder:text-white/20" placeholder="55 1234 5678" maxlength="10" oninput="soloNumeros(this); validarCampo('telefono')">
+                        </div>
+                    </div>
+                    <div class="text-[11px] text-red-400 mt-1.5 items-center gap-1 hidden" id="error-telefono">⚠ Ingresa un número de 10 dígitos</div>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+                    <div>
+                        <label for="entidad-federativa" class="block text-[11px] font-bold tracking-[1.5px] uppercase text-white/35 mb-2">Entidad Federativa</label>
+                        <div class="relative group">
+                            <select type="text" id="entidad-federativa" class="w-full bg-white/5 border border-white/10 rounded-[10px] py-3 px-3.5 pl-10 text-[14px] text-white/35 font-barlow outline-none transition-all duration-250 focus:border-amarillo/50 focus:bg-amarillo/5 focus:shadow-[0_0_0_3px_rgba(250,204,21,0.07)] placeholder:text-white/35" placeholder="Entidad Federativa" oninput="validarCampo('entidad-federativa')">
+                                <option value="" class="bg-black text-white/35">Selecciona una entidad</option>
+                                <option value="CDMX" class="bg-black text-white/35">Ciudad de México</option>
+                                <option value="MEX" class="bg-black text-white/35">Estado de México</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="codigo-postal" class="block text-[11px] font-bold tracking-[1.5px] uppercase text-white/35 mb-2">Codigo Postal</label>
+                        <div class="relative group">
+                            <input type="text" id="codigo-postal" class="w-full bg-white/5 border border-white/10 rounded-[10px] py-3 px-3.5 pl-10 text-[14px] text-white font-barlow outline-none transition-all duration-250 focus:border-amarillo/50 focus:bg-amarillo/5 focus:shadow-[0_0_0_3px_rgba(250,204,21,0.07)] placeholder:text-white/20" placeholder="Código postal" oninput="validarCampo('codigo-postal')">
+                        </div>
+                        <div class="text-[11px] text-red-400 mt-1.5 items-center gap-1 hidden" id="error-codigo-postal">⚠ Ingresa tu código postal</div>
+                    </div>
+                </div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+                <div>
+                    <label for="alcaldias" class="block text-[11px] font-bold tracking-[1.5px] uppercase text-white/35 mb-2">Alcaldía / Municipio</label>
+                    <div class="relative group">
+                        <input type="text" id="alcaldias" class="w-full bg-white/5 border border-white/10 rounded-[10px] py-3 px-3.5 text-[14px] text-white font-barlow outline-none transition-all duration-250 focus:border-amarillo/50 focus:bg-amarillo/5 focus:shadow-[0_0_0_3px_rgba(250,204,21,0.07)] placeholder:text-white/20" placeholder="Nombre de la alcaldía" oninput="validarCampo('alcaldias')">
+                    </div>
+                    <div class="text-[11px] text-red-400 mt-1.5 items-center gap-1 hidden" id="error-alcaldias">⚠ Ingresa la alcaldía o municipio</div>
+                </div>
+                <div>
+                    <label for="colonia" class="block text-[11px] font-bold tracking-[1.5px] uppercase text-white/35 mb-2">Colonia</label>
+                    <div class="relative group">
+                        <input type="text" id="colonia" class="w-full bg-white/5 border border-white/10 rounded-[10px] py-3 px-3.5 text-[14px] text-white font-barlow outline-none transition-all duration-250 focus:border-amarillo/50 focus:bg-amarillo/5 focus:shadow-[0_0_0_3px_rgba(250,204,21,0.07)] placeholder:text-white/20" placeholder="Nombre de la colonia" oninput="validarCampo('colonia')">
+                    </div>
+                    <div class="text-[11px] text-red-400 mt-1.5 items-center gap-1 hidden" id="error-colonia">⚠ Ingresa el nombre de la colonia</div>
+                </div>
+            </div>
+                <div class="mb-3">
+                    <label for="calle" class="block text-[11px] font-bold tracking-[1.5px] uppercase text-white/35 mb-2">Calle</label>
+                    <div class="relative group">
+                        <input type="text" id="calle" class="w-full bg-white/5 border border-white/10 rounded-[10px] py-3 px-3.5 pl-10 text-[14px] text-white font-barlow outline-none transition-all duration-250 focus:border-amarillo/50 focus:bg-amarillo/5 focus:shadow-[0_0_0_3px_rgba(250,204,21,0.07)] placeholder:text-white/20" placeholder="Nombre de la calle" oninput="validarCampo('calle')">
+                    </div>
+                    <div class="text-[11px] text-red-400 mt-1.5 items-center gap-1 hidden" id="error-calle">⚠ Ingresa el nombre de la calle</div>
+                </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+                <div>
+                    <label for="num-exterior" class="block text-[11px] font-bold tracking-[1.5px] uppercase text-white/35 mb-2">Núm. Exterior</label>
+                    <div class="relative group">
+                        <input type="text" id="num-exterior" class="w-full bg-white/5 border border-white/10 rounded-[10px] py-3 px-3.5 text-[14px] text-white font-barlow outline-none transition-all duration-250 focus:border-amarillo/50 focus:bg-amarillo/5 focus:shadow-[0_0_0_3px_rgba(250,204,21,0.07)] placeholder:text-white/20" placeholder="Ej. 123" oninput="validarCampo('num-exterior')">
+                    </div>
+                    <div class="text-[11px] text-red-400 mt-1.5 items-center gap-1 hidden" id="error-num-exterior">⚠ Ingresa el número exterior</div>
+                </div>
+                <div>
+                    <label for="num-interior" class="block text-[11px] font-bold tracking-[1.5px] uppercase text-white/35 mb-2">Núm. Interior</label>
+                    <div class="relative group">
+                        <input type="text" id="num-interior" class="w-full bg-white/5 border border-white/10 rounded-[10px] py-3 px-3.5 text-[14px] text-white font-barlow outline-none transition-all duration-250 focus:border-amarillo/50 focus:bg-amarillo/5 focus:shadow-[0_0_0_3px_rgba(250,204,21,0.07)] placeholder:text-white/20" placeholder="Opcional">
+                    </div>
+                </div>
+            </div>
+
+                <div class="text-[11px] font-bold tracking-[3px] uppercase text-white/20 my-6 mb-4 flex items-center gap-2.5 after:content-[''] after:flex-1 after:h-px after:bg-white/5">Datos de acceso</div>
+
+                <div class="mb-3">
+                    <label for="email" class="block text-[11px] font-bold tracking-[1.5px] uppercase text-white/35 mb-2">Correo electrónico</label>
+                    <div class="relative group">
+                        <input type="email" id="email" class="w-full bg-white/5 border border-white/10 rounded-[10px] py-3 px-3.5 pl-10 text-[14px] text-white font-barlow outline-none transition-all duration-250 focus:border-amarillo/50 focus:bg-amarillo/5 focus:shadow-[0_0_0_3px_rgba(250,204,21,0.07)] placeholder:text-white/20" placeholder="tu@correo.com" oninput="validarCampo('email')">
+                    </div>
+                    <div class="text-[11px] text-red-400 mt-1.5 items-center gap-1 hidden" id="error-email">⚠ Ingresa un correo electrónico válido</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="block text-[11px] font-bold tracking-[1.5px] uppercase text-white/35 mb-2">Contraseña</label>
+                    <div class="relative group">
+                        <input type="password" id="password" class="w-full bg-white/5 border border-white/10 rounded-[10px] py-3 px-3.5 pl-10 pr-11 text-[14px] text-white font-barlow outline-none transition-all duration-250 focus:border-amarillo/50 focus:bg-amarillo/5 focus:shadow-[0_0_0_3px_rgba(250,204,21,0.07)] placeholder:text-white/20" placeholder="Mínimo 8 caracteres" oninput="evaluarPass(); validarCampo('password')">
+                        <button class="absolute right-3 top-1/2 -translate-y-1/2 bg-none border-none cursor-pointer text-[15px] text-white/30 transition-colors p-1 leading-none hover:text-white/70" type="button" onclick="togglePass('password','toggle1')" id="toggle1">👁</button>
+                    </div>
+                    <div class="mt-2 hidden" id="fortaleza-wrap">
+                        <div class="flex gap-1 mb-1.5">
+                            <div class="flex-1 h-[3px] rounded-[2px] bg-white/5 transition-colors duration-300" id="b1"></div>
+                            <div class="flex-1 h-[3px] rounded-[2px] bg-white/5 transition-colors duration-300" id="b2"></div>
+                            <div class="flex-1 h-[3px] rounded-[2px] bg-white/5 transition-colors duration-300" id="b3"></div>
+                            <div class="flex-1 h-[3px] rounded-[2px] bg-white/5 transition-colors duration-300" id="b4"></div>
+                        </div>
+                        <div class="text-[11px] text-white/35 font-semibold tracking-[0.5px] transition-colors duration-300" id="fortaleza-texto">Contraseña débil</div>
+                    </div>
+                    <div class="text-[11px] text-red-400 mt-1.5 items-center gap-1 hidden" id="error-password">⚠ La contraseña debe tener al menos 8 caracteres</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="confirmar" class="block text-[11px] font-bold tracking-[1.5px] uppercase text-white/35 mb-2">Confirmar contraseña</label>
+                    <div class="relative group">
+                        <input type="password" id="confirmar" class="w-full bg-white/5 border border-white/10 rounded-[10px] py-3 px-3.5 pl-10 pr-11 text-[14px] text-white font-barlow outline-none transition-all duration-250 focus:border-amarillo/50 focus:bg-amarillo/5 focus:shadow-[0_0_0_3px_rgba(250,204,21,0.07)] placeholder:text-white/20" placeholder="Repite tu contraseña" oninput="validarCampo('confirmar')">
+                        <button class="absolute right-3 top-1/2 -translate-y-1/2 bg-none border-none cursor-pointer text-[15px] text-white/30 transition-colors p-1 leading-none hover:text-white/70" type="button" onclick="togglePass('confirmar','toggle2')" id="toggle2">👁</button>
+                    </div>
+                    <div class="text-[11px] text-red-400 mt-1.5 items-center gap-1 hidden" id="error-confirmar">⚠ Las contraseñas no coinciden</div>
+                </div>
+
+                <button class="w-full bg-amarillo text-black font-barlow font-bold text-[15px] tracking-[2px] uppercase py-[15px] px-6 rounded-[10px] border-none cursor-pointer transition-all duration-200 shadow-[0_4px_20px_rgba(250,204,21,0.25)] flex items-center justify-center gap-2.5 mb-5 hover:bg-[#fde047] hover:-translate-y-0.5 hover:shadow-[0_8px_30px_rgba(250,204,21,0.4)] active:translate-y-0" id="btn-registro" onclick="registrar()">
+                    <span id="btn-texto">Crear mi cuenta</span>
+                    <span id="btn-icono">→</span>
+                </button>
+
+                <div class="text-center text-[14px] text-white/35 mb-6">
+                    ¿Ya tienes cuenta? <a href="Login.html" class="text-amarillo no-underline font-bold transition-opacity duration-200 hover:opacity-80">Inicia sesión aquí</a>
+                </div>
+
+                <div class="flex gap-2 justify-center flex-wrap">
+                    <div class="flex items-center gap-1.5 text-[11px] text-white/20 font-semibold">Datos seguros</div>
+                    <div class="flex items-center gap-1.5 text-[11px] text-white/20 font-semibold text-white/10">|</div>
+                    <div class="flex items-center gap-1.5 text-[11px] text-white/20 font-semibold">100% gratis</div>
+                    <div class="flex items-center gap-1.5 text-[11px] text-white/20 font-semibold text-white/10">|</div>
+                    <div class="flex items-center gap-1.5 text-[11px] text-white/20 font-semibold">Sin spam</div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="bg-negro border-t border-white/5 py-5 px-8 flex items-center justify-between text-[12px] text-white/20 flex-col md:flex-row gap-4">
+        <span>© 2025 Refaccionaria Leo</span>
+        <div class="flex gap-6">
+            <a href="index.html" class="text-white/30 no-underline transition-colors duration-200 hover:text-white/60">Inicio</a>
+            <a href="Productos.html" class="text-white/30 no-underline transition-colors duration-200 hover:text-white/60">Productos</a>
+            <a href="Contacto.html" class="text-white/30 no-underline transition-colors duration-200 hover:text-white/60">Contacto</a>
+        </div>
+        <span>Chimalhuacán, Estado de México</span>
+    </div>
+
+    <div class="fixed bottom-8 right-8 bg-[#1a1a1a] border border-[#4ade80]/35 rounded-[14px] py-4 px-6 flex items-center gap-3.5 text-[14px] text-white z-[300] translate-y-[100px] opacity-0 transition-all duration-400 ease-out pointer-events-none max-w-[340px] shadow-[0_8px_32px_rgba(0,0,0,0.5)]" id="toast">
+        <div class="text-[26px] shrink-0">🎉</div>
+        <div>
+            <div class="font-bold mb-[3px]">¡Cuenta creada!</div>
+            <div class="text-[12px] text-white/50">Revisa tu correo para confirmar tu cuenta.</div>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script>
+        let terminosAceptados = true; 
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        function soloNumeros(el) {
+            el.value = el.value.replace(/\D/g, '');
+        }
+
+        function togglePass(idCampo, idBtn) {
+            const inp = document.getElementById(idCampo);
+            const btn = document.getElementById(idBtn);
+            const visible = inp.type === 'text';
+            inp.type = visible ? 'password' : 'text';
+            btn.textContent = visible ? '👁' : '🙈';
+        }
+
+        function evaluarPass() {
+            const val = document.getElementById('password').value;
+            const wrap = document.getElementById('fortaleza-wrap');
+            const texto = document.getElementById('fortaleza-texto');
+            const barras = ['b1','b2','b3','b4'];
+
+            if (!val) { wrap.classList.replace('block', 'hidden'); return; }
+            wrap.classList.replace('hidden', 'block');
+
+            let puntos = 0;
+            if (val.length >= 8) puntos++;
+            if (/[A-Z]/.test(val)) puntos++;
+            if (/[0-9]/.test(val)) puntos++;
+            if (/[^A-Za-z0-9]/.test(val)) puntos++;
+
+            const niveles = [
+                { clase: 'bg-[#f87171]', label: 'Contraseña débil', color: '#f87171' },
+                { clase: 'bg-[#fb923c]', label: 'Contraseña regular', color: '#fb923c' },
+                { clase: 'bg-[#FACC15]', label: 'Contraseña buena', color: '#FACC15' },
+                { clase: 'bg-[#4ade80]', label: 'Contraseña muy fuerte', color: '#4ade80' },
+            ];
+
+            const nivel = niveles[puntos - 1] || niveles[0];
+            barras.forEach((id, i) => {
+                const b = document.getElementById(id);
+                b.className = 'flex-1 h-[3px] rounded-[2px] transition-colors duration-300';
+                if (i < puntos) {
+                    b.classList.add(nivel.clase);
+                } else {
+                    b.classList.add('bg-white/5');
+                }
+            });
+            texto.textContent = nivel.label;
+            texto.style.color = nivel.color;
+        }
+
+        function validarCampo(id) {
+            const campo = document.getElementById(id);
+            const error = document.getElementById('error-' + id);
+            if (!campo || !error) return;
+
+            let valido = true;
+            const val = campo.value.trim();
+
+            if (id === 'nombre' || id === 'apellidos') valido = val.length >= 2;
+            if (id === 'email') valido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+            if (id === 'telefono') valido = /^\d{10}$/.test(campo.value.replace(/\s/g,''));
+            if (id === 'codigo-postal') valido = /^\d{5}$/.test(val);
+            if (id === 'entidad-federativa' || id === 'alcaldias' || id === 'colonia' || id === 'calle' || id === 'num-exterior') valido = val.length > 0;
+            if (id === 'password') valido = campo.value.length >= 8;
+            if (id === 'confirmar') {
+                const pass = document.getElementById('password').value;
+                valido = campo.value === pass && campo.value.length > 0;
+            }
+
+            if (val === '' || campo.value === '') {
+                campo.classList.remove('border-red-400/50', 'shadow-[0_0_0_3px_rgba(248,113,113,0.07)]', 'border-[#4ade80]/40');
+                campo.classList.add('border-white/10');
+                error.classList.replace('flex', 'hidden');
+                return;
+            }
+            
+            if (!valido) {
+                campo.classList.remove('border-white/10', 'border-[#4ade80]/40');
+                campo.classList.add('border-red-400/50', 'shadow-[0_0_0_3px_rgba(248,113,113,0.07)]');
+                error.classList.replace('hidden', 'flex');
+            } else {
+                campo.classList.remove('border-red-400/50', 'shadow-[0_0_0_3px_rgba(248,113,113,0.07)]', 'border-white/10');
+                campo.classList.add('border-[#4ade80]/40');
+                error.classList.replace('flex', 'hidden');
+            }
+        }
+
+        function restablecerBoton(btn) {
+            btn.classList.remove('bg-amarillo/35', 'pointer-events-none');
+            document.getElementById('btn-texto').textContent = 'Crear mi cuenta';
+            document.getElementById('btn-icono').textContent = '→';
+        }
+
+        function registrar() {
+            const campos = ['nombre','apellidos','telefono', 'entidad-federativa', 'codigo-postal', 'alcaldias','colonia', 'calle', 'num-exterior', 'email','password','confirmar'];
+            let valido = true;
+
+            campos.forEach(id => {
+                const campo = document.getElementById(id);
+                const error = document.getElementById('error-' + id);
+                if(!campo) return;
+                
+                let ok = true;
+                const val = campo.value.trim();
+
+                if (id === 'nombre' || id === 'apellidos') ok = val.length >= 2;
+                if (id === 'email') ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+                if (id === 'telefono') ok = /^\d{10}$/.test(campo.value.replace(/\s/g,''));
+                if (id === 'codigo-postal') ok = /^\d{5}$/.test(val);
+                if (id === 'entidad-federativa' || id === 'alcaldias' || id === 'colonia' || id === 'calle' || id === 'num-exterior') ok = val.length > 0;
+                if (id === 'password') ok = campo.value.length >= 8;
+                if (id === 'confirmar') ok = campo.value === document.getElementById('password').value && campo.value.length > 0;
+
+                if (!ok && error) {
+                    campo.classList.remove('border-white/10', 'border-[#4ade80]/40');
+                    campo.classList.add('border-red-400/50', 'shadow-[0_0_0_3px_rgba(248,113,113,0.07)]');
+                    error.classList.replace('hidden', 'flex');
+                    valido = false;
+                }
+            });
+
+            if (!terminosAceptados || !valido) return;
+
+            const btn = document.getElementById('btn-registro');
+            btn.classList.add('bg-amarillo/35', 'pointer-events-none');
+            document.getElementById('btn-texto').textContent = 'Guardando datos...';
+            document.getElementById('btn-icono').innerHTML = '<div class="w-[18px] h-[18px] border-2 border-black/20 border-t-black rounded-full animate-[spin_0.7s_linear_infinite]"></div>';
+
+            const email = document.getElementById('email').value.trim().toLowerCase();
+            const usuarios = getUsers();
+
+            if (usuarios.find(u => u.email === email)) {
+                alert("El correo electrónico ya está registrado.");
+                restablecerBoton(btn);
+                return;
+            }
+
+            const nuevoUsuario = {
+                id: usuarios.length > 0 ? Math.max(...usuarios.map(u => u.id)) + 1 : 1,
+                nombre: document.getElementById('nombre').value.trim(),
+                apellidos: document.getElementById('apellidos').value.trim(),
+                email: email,
+                tel: document.getElementById('telefono').value.trim(),
+                password: btoa(document.getElementById('password').value),
+                rol: 1,
+                direccion: {
+                    entidad: document.getElementById('entidad-federativa').value,
+                    cp: document.getElementById('codigo-postal').value.trim(),
+                    alcaldia: document.getElementById('alcaldias').value.trim(),
+                    colonia: document.getElementById('colonia').value.trim(),
+                    calle: document.getElementById('calle').value.trim(),
+                    numExt: document.getElementById('num-exterior').value.trim(),
+                    numInt: document.getElementById('num-interior').value.trim()
+                }
+            };
+
+            usuarios.push(nuevoUsuario);
+            saveUsers(usuarios);
+
+            setTimeout(() => {
+                document.getElementById('btn-texto').textContent = '¡Cuenta creada!';
+                document.getElementById('btn-icono').textContent = '✓';
+                btn.style.background = 'rgba(74,222,128,0.18)';
+                btn.style.color = '#4ade80';
+                btn.style.boxShadow = '0 4px 20px rgba(74,222,128,0.12)';
+
+                const toast = document.getElementById('toast');
+                toast.classList.replace('translate-y-[100px]', 'translate-y-0');
+                toast.classList.replace('opacity-0', 'opacity-100');
+                
+                campos.forEach(id => {
+                    const c = document.getElementById(id);
+                    if(c) c.value = '';
+                });
+                document.getElementById('num-interior').value = '';
+                document.getElementById('entidad-federativa').value = '';
+                document.getElementById('fortaleza-wrap').classList.replace('block', 'hidden');
+
+                setTimeout(() => {
+                    toast.classList.replace('translate-y-0', 'translate-y-[100px]');
+                    toast.classList.replace('opacity-100', 'opacity-0');
+                    
+                    btn.style.background = '';
+                    btn.style.color = '';
+                    btn.style.boxShadow = '';
+                    btn.classList.remove('bg-amarillo/35', 'pointer-events-none');
+                    btn.classList.add('hover:-translate-y-0.5', 'hover:bg-[#fde047]', 'shadow-[0_4px_20px_rgba(250,204,21,0.25)]');
+                    btn.innerHTML = '<span id="btn-texto">Crear mi cuenta</span><span id="btn-icono">→</span>';
+
+                    window.location.href = "Login.html";
+                }, 2500);
+            }, 800);
+        }
+    </script>
+</body>
+</html>
