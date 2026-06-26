@@ -38,7 +38,7 @@
                 <li><a href="index.html" class="block py-[7px] px-4 rounded-[6px] text-[13px] font-semibold tracking-[1.5px] uppercase no-underline text-white/75 transition-colors duration-200 hover:text-white hover:bg-white/10">Inicio</a></li>
                 <li><a href="Productos.html" class="block py-[7px] px-4 rounded-[6px] text-[13px] font-semibold tracking-[1.5px] uppercase no-underline text-white/75 transition-colors duration-200 hover:text-white hover:bg-white/10">Productos</a></li>
                 <li><a href="admin.html" id="nav-admin" class="hidden py-[7px] px-4 rounded-[6px] text-[13px] font-semibold tracking-[1.5px] uppercase no-underline text-white/75 transition-colors duration-200 hover:text-white hover:bg-white/10">Panel Dueño</a></li>
-                <li><button onclick="logout()" class="block py-[7px] px-4 rounded-[6px] text-[13px] font-semibold tracking-[1.5px] uppercase no-underline transition-colors duration-200 bg-red-500/20 text-red-400 hover:bg-red-500/40 cursor-pointer">Salir</button></li>
+                <li><button onclick="salir()" class="block py-[7px] px-4 rounded-[6px] text-[13px] font-semibold tracking-[1.5px] uppercase no-underline transition-colors duration-200 bg-red-500/20 text-red-400 hover:bg-red-500/40 cursor-pointer">Salir</button></li>
             </ul>
         </div>
     </nav>
@@ -254,8 +254,8 @@
             }, 2000);
         }
 
-        function logout() {
-            localStorage.removeItem('rl_sesion');
+        function salir() {
+            logout();
             window.location.href = "login.html";
         }
     </script>

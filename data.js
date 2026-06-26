@@ -1,3 +1,16 @@
+function getCookie(nombre) {
+  const v = document.cookie.match('(^|;)\\s*' + nombre + '\\s*=\\s*([^;]+)');
+  return v ? decodeURIComponent(v.pop()) : null;
+}
+function setCookie(nombre, valor, dias) {
+  const d = new Date();
+  d.setTime(d.getTime() + (dias || 30) * 24 * 60 * 60 * 1000);
+  document.cookie = nombre + '=' + encodeURIComponent(JSON.stringify(valor)) + '; expires=' + d.toUTCString() + '; path=/; SameSite=Lax';
+}
+function eraseCookie(nombre) {
+  document.cookie = nombre + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Lax';
+}
+
 const CATALOGO = [
   { id: 1, nombre: "Aceite de motor sintético 5W-30", categoria: "aceites", precio: 189, stock: 50, imagen: "🛢️", descripcion: "Aceite sintético de alto rendimiento para motores modernos." },
   { id: 2, nombre: "Quaker Monogrado 40 API SL", categoria: "aceites", precio: 55, stock: 80, imagen: "IMG/Monogrado-40-1lt-removebg-preview-convertido-de-png.webp", descripcion: "Aceite monogrado para protección básica. 1 Litro" },
@@ -37,13 +50,22 @@ function saveUsers(u) {
   localStorage.setItem('rl_usuarios', JSON.stringify(u));
 }
 function getCurrentUser() {
+  const cookie = getCookie('rl_sesion');
+  if (cookie) return JSON.parse(cookie);
   return JSON.parse(localStorage.getItem('rl_sesion') || 'null');
 }
-function setCurrentUser(u) {
+function setCurrentUser(u, recordar) {
   localStorage.setItem('rl_sesion', JSON.stringify(u));
+  if (recordar) {
+    setCookie('rl_sesion', u, 30);
+  } else {
+    eraseCookie('rl_sesion');
+  }
 }
 function logout() {
   localStorage.removeItem('rl_sesion');
+  eraseCookie('rl_sesion');
+  eraseCookie('rl_recordar');
 }
 function getCart(email) {
   return JSON.parse(localStorage.getItem('rl_carrito_' + email) || '[]');
@@ -101,6 +123,27 @@ function ajustarStock(idProducto, cambio) {
   stockOverrides[idProducto] = Math.max(0, actual + cambio);
   saveStock(stockOverrides);
   return stockOverrides[idProducto];
+}
+
+function descargarDatosTxt() {
+  const usuarios = getUsers();
+  const pedidos = getOrders();
+  let txt = "=== RESPALDO REFACCIONARIA LEO ===\n";
+  txt += "Fecha: " + new Date().toLocaleString('es-MX') + "\n\n";
+  txt += "--- USUARIOS (" + usuarios.length + ") ---\n";
+  usuarios.forEach(u => {
+    txt += "ID:" + u.id + " | " + u.nombre + " " + u.apellidos + " | " + u.email + " | Rol:" + u.rol + "\n";
+  });
+  txt += "\n--- PEDIDOS (" + pedidos.length + ") ---\n";
+  pedidos.forEach(p => {
+    txt += "#" + p.id_pedido + " | " + p.fecha + " | " + p.cliente + " | $" + p.total.toFixed(2) + " | " + p.estado + "\n";
+  });
+  const blob = new Blob([txt], { type: 'text/plain;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'respaldo_refaccionaria_leo.txt';
+  a.click();
+  URL.revokeObjectURL(a.href);
 }
 
 const formatearMXN = (monto) => new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(monto);

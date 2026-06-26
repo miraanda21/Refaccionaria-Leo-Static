@@ -158,15 +158,20 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             const sesion = getCurrentUser();
-            if (sesion) {
-                document.getElementById('email').value = sesion.email;
+            const recCookie = getCookie('rl_recordar');
+            if (recCookie === 'true') {
                 recordar = true;
                 const el = document.getElementById('check-recordar');
                 el.classList.replace('bg-white/5', 'bg-amarillo/15');
                 el.classList.replace('border-white/15', 'border-amarillo/50');
                 el.classList.replace('text-transparent', 'text-amarillo');
                 el.textContent = '✓';
-                iniciarSesion(true);
+            }
+            if (sesion) {
+                document.getElementById('email').value = sesion.email;
+                if (recordar) {
+                    iniciarSesion(true);
+                }
             }
         });
 
@@ -208,7 +213,7 @@
         }
 
         function iniciarSesion(esAutoLogin = false) {
-            const email = document.getElementById('email').value.trim();
+            const email = document.getElementById('email').value.trim().toLowerCase();
             const pass  = document.getElementById('password').value;
             const btn   = document.getElementById('btn-login');
 
@@ -230,11 +235,12 @@
                 return;
             }
 
-            setCurrentUser({ id: usuario.id, nombre: usuario.nombre, apellidos: usuario.apellidos, email: usuario.email, rol: usuario.rol });
+            setCurrentUser({ id: usuario.id, nombre: usuario.nombre, apellidos: usuario.apellidos, email: usuario.email, rol: usuario.rol }, recordar);
 
             if (recordar) {
-                localStorage.setItem('sesion_activa', 'true');
-                localStorage.setItem('usuario_email', email);
+                setCookie('rl_recordar', true, 30);
+            } else {
+                eraseCookie('rl_recordar');
             }
 
             btn.classList.add('bg-amarillo/35', 'pointer-events-none');
