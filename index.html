@@ -279,9 +279,35 @@
             <span>© 2025 Refaccionaria Leo — Todos los derechos reservados</span>
             <span>Chimalhuacán, Estado de México</span>
         </div>
-    </footer>
+        </footer>
 
+    <!-- 1. IMPORTAR data.js AQUÍ -->
+    <script src="data.js"></script>
+    
     <script>
+        // 2. LÓGICA PARA DETECTAR LA SESIÓN Y CAMBIAR LA NAVBAR
+        document.addEventListener("DOMContentLoaded", () => {
+            const usuarioActivo = getCurrentUser();
+            
+            if (usuarioActivo) {
+                // Seleccionamos los enlaces de "Iniciar sesión" del menú de PC y del menú móvil
+                const enlacesLogin = document.querySelectorAll('a[href="Login.html"]');
+                
+                enlacesLogin.forEach(enlace => {
+                    if (usuarioActivo.rol == 2) {
+                        // Si es el dueño
+                        enlace.textContent = 'Panel Dueño';
+                        enlace.href = 'admin.html';
+                    } else {
+                        // Si es un cliente normal
+                        enlace.textContent = 'Mi Carrito';
+                        enlace.href = 'carrito.html';
+                    }
+                });
+            }
+        });
+
+        // TUS FUNCIONES ORIGINALES DEL INDEX
         const reveals = document.querySelectorAll('.reveal');
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry, i) => {
@@ -303,6 +329,7 @@
                 nav.style.borderBottomColor = 'rgba(250,204,21,0.15)';
             }
         });
+        
         const menuBtn = document.getElementById('menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
 

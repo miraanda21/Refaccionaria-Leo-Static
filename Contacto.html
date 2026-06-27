@@ -318,6 +318,9 @@
         </div>
     </footer>
 
+    <!-- 1. IMPORTAR data.js -->
+    <script src="data.js"></script>
+
     <div class="toast fixed bottom-8 right-8 bg-[#1a1a1a] border border-[#4ade80]/35 rounded-[14px] py-[1.1rem] px-6 flex items-center gap-3.5 text-[14px] text-white z-[300] max-w-[340px] shadow-[0_8px_32px_rgba(0,0,0,0.5)]" id="toast">
         <div class="text-[28px] shrink-0">✅</div>
         <div>
@@ -327,6 +330,26 @@
     </div>
 
     <script>
+        // 2. LÓGICA PARA DETECTAR LA SESIÓN Y CAMBIAR LA NAVBAR
+        document.addEventListener("DOMContentLoaded", () => {
+            const usuarioActivo = getCurrentUser();
+            
+            if (usuarioActivo) {
+                const enlacesLogin = document.querySelectorAll('a[href="Login.html"]');
+                
+                enlacesLogin.forEach(enlace => {
+                    if (usuarioActivo.rol == 2) {
+                        enlace.textContent = 'Panel Dueño';
+                        enlace.href = 'admin.html';
+                    } else {
+                        enlace.textContent = 'Mi Carrito';
+                        enlace.href = 'carrito.html';
+                    }
+                });
+            }
+        });
+
+        // TUS FUNCIONES ORIGINALES
         function selChip(el) {
             document.querySelectorAll('.chip').forEach(c => c.classList.remove('activo'));
             el.classList.add('activo');
