@@ -171,6 +171,16 @@ const formatearMXN = (monto) => new Intl.NumberFormat('es-MX', { style: 'currenc
       rol: 1,
       direccion: { entidad: "CDMX", cp: "56330", alcaldia: "Chimalhuacán", colonia: "Centro", calle: "Av. Principal", numExt: "123", numInt: "" }
     });
+      usuarios.push({
+      id: 1,
+      nombre: "Tester",
+      apellidos: "Leo",
+      email: "tester@refaccionarialeo.com",
+      tel: "5512365678",
+      password: btoa("tester123"),
+      rol: 2,
+      direccion: { entidad: "MEX", cp: "56634", alcaldia: "Chimalhuacán", colonia: "Herreros", calle: "Av. de los Patos", numExt: "M4", numInt: "L35" }
+    });
     saveUsers(usuarios);
   }
 })();
